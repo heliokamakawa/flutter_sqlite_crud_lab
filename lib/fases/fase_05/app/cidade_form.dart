@@ -39,7 +39,8 @@ class _CidadeFormPageState extends State<CidadeFormPage> {
   }
 
   Future<void> _carregarEstados() async {
-    final List<Estado> encontrados = await widget.estadoRepository.listarTodos();
+    final List<Estado> encontrados = await widget.estadoRepository
+        .listarTodos();
 
     if (!mounted) return;
 
@@ -85,9 +86,7 @@ class _CidadeFormPageState extends State<CidadeFormPage> {
   }
 
   void _mostrarMensagem(String texto) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(texto)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(texto)));
   }
 
   @override

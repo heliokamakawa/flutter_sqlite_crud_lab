@@ -5,35 +5,35 @@ import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
 import 'database_sql.dart';
 
-class Fase02Database {
-  Fase02Database._();
+class Conexao {
+  Conexao._();
 
-  static final Fase02Database instance = Fase02Database._();
+  static final Conexao instancia = Conexao._();
 
   static const String nomeBanco = 'fase_02_model.db';
   static const String nomeBancoWeb = 'fase_02_model_web.db';
 
-  Database? _database;
+  Database? _bancoDados;
 
-  Future<Database> get database async {
-    final Database? databaseAberto = _database;
+  Future<Database> get bancoDados async {
+    final Database? bancoAberto = _bancoDados;
 
-    if (databaseAberto != null) {
-      return databaseAberto;
+    if (bancoAberto != null) {
+      return bancoAberto;
     }
 
-    final Database novoDatabase = await _abrirConexao();
-    _database = novoDatabase;
+    final Database novoBanco = await _abrir();
+    _bancoDados = novoBanco;
 
-    return novoDatabase;
+    return novoBanco;
   }
 
-  Future<void> fecharConexao() async {
-    await _database?.close();
-    _database = null;
+  Future<void> fechar() async {
+    await _bancoDados?.close();
+    _bancoDados = null;
   }
 
-  Future<Database> _abrirConexao() async {
+  Future<Database> _abrir() async {
     if (kIsWeb) {
       databaseFactory = databaseFactoryFfiWeb;
     }

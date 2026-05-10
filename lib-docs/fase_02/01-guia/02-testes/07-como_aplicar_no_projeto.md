@@ -67,7 +67,7 @@ Testa as regras do construtor `Cidade(nome, estadoId)`:
 - estadoId invalido lanca `ArgumentError`
 
 ### database_test.dart
-Testa o singleton `Fase02Database`:
+Testa o singleton `Conexao`:
 - instancias diferentes retornam o mesmo objeto
 - banco abre corretamente
 

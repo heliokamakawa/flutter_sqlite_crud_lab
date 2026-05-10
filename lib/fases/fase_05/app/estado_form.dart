@@ -61,9 +61,7 @@ class _EstadoFormPageState extends State<EstadoFormPage> {
   }
 
   void _mostrarMensagem(String texto) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(texto)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(texto)));
   }
 
   @override

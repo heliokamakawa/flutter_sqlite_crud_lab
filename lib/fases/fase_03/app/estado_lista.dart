@@ -23,10 +23,10 @@ class _EstadoListaPageState extends State<EstadoListaPage> {
   }
 
   Future<void> listarEstados() async {
-    final Database banco = await Fase03Database.instance.database;
+    final Database banco = await Conexao.instancia.bancoDados;
     final EstadoDao dao = EstadoDao(banco);
 
-    final List<Estado> estadosEncontrados = await dao.findAll();
+    final List<Estado> estadosEncontrados = await dao.buscarTodos();
 
     if (!mounted) {
       return;
@@ -38,10 +38,10 @@ class _EstadoListaPageState extends State<EstadoListaPage> {
   }
 
   Future<void> excluirEstado(int id) async {
-    final Database banco = await Fase03Database.instance.database;
+    final Database banco = await Conexao.instancia.bancoDados;
     final EstadoDao dao = EstadoDao(banco);
 
-    await dao.delete(id);
+    await dao.excluir(id);
 
     await listarEstados();
   }

@@ -2,7 +2,7 @@
 
 ## O que esta fase adiciona
 
-- Conexao: `Fase02Database` (singleton)
+- Conexao: `Conexao` (singleton)
 - SQL inicial: `DatabaseSql` (arquivo separado)
 - Models: `Estado` e `Cidade` com `fromMap` / `toMap`
 - Testes unitarios para Model e Database
@@ -14,13 +14,13 @@
 Arquivo: `lib/fases/fase_02/database/database.dart`
 
 Observe:
-- construtor privado `Fase02Database._()`
-- instancia unica `static final instance`
-- getter `database` que reaproveita a conexao ja aberta
+- construtor privado `Conexao._()`
+- instancia unica `static final instancia`
+- getter `bancoDados` que reaproveita a conexao ja aberta
 
 Compare com Fase 01 (`lib/fases/fase_01/app/estado_lista.dart`):
-- Fase 01: cada tela chamava `abrirConexaoBanco()`
-- Fase 02: qualquer tela usa `Fase02Database.instance.database`
+- Fase 01: a tela tambem usa `Conexao.instancia.bancoDados`
+- Fase 02: qualquer tela usa `Conexao.instancia.bancoDados`
 
 ### 2. SQL separado
 
@@ -46,9 +46,9 @@ Observe:
 Arquivo: `lib/fases/fase_02/models/cidade.dart`
 
 Observe:
-- campos `estadoNome` e `estadoSigla` sao opcionais (`String?`)
-- esses campos vem do JOIN — nao existem na tabela `cidade`
-- `toMap` nao inclui esses campos porque a tabela `cidade` nao os tem
+- campos `id`, `nome` e `estadoId`
+- `Cidade` representa somente a tabela `cidade`
+- `toMap` grava apenas `nome` e `estado_id`
 
 ### 5. Tela de lista
 

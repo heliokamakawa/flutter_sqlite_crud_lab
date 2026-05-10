@@ -8,8 +8,8 @@ class Conexao {
 
   static final Conexao instancia = Conexao._();
 
-  static const String _nomeBanco = 'fase_03_dao.db';
-  static const String _nomeBancoWeb = 'fase_03_dao_web.db';
+  static const String _nomeBanco = 'fase_01_crud_raiz.db';
+  static const String _nomeBancoWeb = 'fase_01_crud_raiz_web.db';
 
   Database? _bancoDados;
 
@@ -52,14 +52,38 @@ class Conexao {
           )
         ''');
 
-        await db.execute(
-          "INSERT INTO estado (nome, sigla) VALUES ('Sao Paulo', 'SP')",
+        await db.execute('''
+          CREATE TABLE cidade (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL,
+            estado_id INTEGER NOT NULL
+          )
+        ''');
+
+        await db.rawInsert('INSERT INTO estado (nome, sigla) VALUES (?, ?)', [
+          'Sao Paulo',
+          'SP',
+        ]);
+        await db.rawInsert('INSERT INTO estado (nome, sigla) VALUES (?, ?)', [
+          'Rio de Janeiro',
+          'RJ',
+        ]);
+        await db.rawInsert('INSERT INTO estado (nome, sigla) VALUES (?, ?)', [
+          'Minas Gerais',
+          'MG',
+        ]);
+
+        await db.rawInsert(
+          'INSERT INTO cidade (nome, estado_id) VALUES (?, ?)',
+          ['Sao Paulo', 1],
         );
-        await db.execute(
-          "INSERT INTO estado (nome, sigla) VALUES ('Rio de Janeiro', 'RJ')",
+        await db.rawInsert(
+          'INSERT INTO cidade (nome, estado_id) VALUES (?, ?)',
+          ['Rio de Janeiro', 2],
         );
-        await db.execute(
-          "INSERT INTO estado (nome, sigla) VALUES ('Minas Gerais', 'MG')",
+        await db.rawInsert(
+          'INSERT INTO cidade (nome, estado_id) VALUES (?, ?)',
+          ['Belo Horizonte', 3],
         );
       },
     );

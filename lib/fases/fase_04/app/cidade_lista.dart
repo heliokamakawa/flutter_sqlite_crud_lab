@@ -28,8 +28,8 @@ class _CidadeListaPageState extends State<CidadeListaPage> {
   }
 
   Future<void> _carregarEstados() async {
-    final Database banco = await Fase04Database.instance.database;
-    final List<Estado> encontrados = await EstadoDao(banco).findAll();
+    final Database banco = await Conexao.instancia.bancoDados;
+    final List<Estado> encontrados = await EstadoDao(banco).buscarTodos();
 
     if (!mounted) return;
 
@@ -39,14 +39,14 @@ class _CidadeListaPageState extends State<CidadeListaPage> {
   }
 
   Future<void> _listarCidades() async {
-    final Database banco = await Fase04Database.instance.database;
+    final Database banco = await Conexao.instancia.bancoDados;
     final CidadeDao dao = CidadeDao(banco);
 
     final Estado? filtro = estadoFiltro;
 
     final List<CidadeComEstadoDto> encontradas = filtro == null
-        ? await dao.findAll()
-        : await dao.findByEstado(filtro.id!);
+        ? await dao.buscarTodos()
+        : await dao.buscarPorEstado(filtro.id!);
 
     if (!mounted) return;
 
@@ -56,8 +56,8 @@ class _CidadeListaPageState extends State<CidadeListaPage> {
   }
 
   Future<void> _excluirCidade(int id) async {
-    final Database banco = await Fase04Database.instance.database;
-    await CidadeDao(banco).delete(id);
+    final Database banco = await Conexao.instancia.bancoDados;
+    await CidadeDao(banco).excluir(id);
     await _listarCidades();
   }
 

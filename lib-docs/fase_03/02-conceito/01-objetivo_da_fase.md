@@ -36,10 +36,10 @@ Ele concentra todo o SQL relativo a uma entidade.
 A tela passa a chamar metodos:
 
 ```dart
-dao.findAll()
-dao.insert(estado)
-dao.update(estado)
-dao.delete(id)
+dao.buscarTodos()
+dao.inserir(estado)
+dao.atualizar(estado)
+dao.excluir(id)
 ```
 
 Em vez de escrever SQL:
@@ -81,7 +81,7 @@ Ao final da Fase 03, o aluno deve conseguir explicar:
 
 - por que o SQL nao pertence a tela;
 - o que e um DAO e qual e sua responsabilidade;
-- como os metodos `findAll`, `findById`, `insert`, `update` e `delete` organizam o acesso ao banco;
+- como os metodos `buscarTodos`, `buscarPorId`, `insert`, `update` e `delete` organizam o acesso ao banco;
 - como a tela fica mais simples quando nao sabe SQL.
 
 ## Referencias para estudo

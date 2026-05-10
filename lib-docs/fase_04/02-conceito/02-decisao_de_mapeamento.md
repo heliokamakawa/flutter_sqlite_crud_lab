@@ -58,17 +58,17 @@ O Model `Cidade` permanece limpo, com apenas seus dados essenciais.
 
 ## Por que a Fase 04 usa o DTO
 
-A Fase 02 tinha `CidadeDto` com campos opcionais (`String?`).
+A ideia antiga seria colocar campos opcionais em `Cidade` (`String?`).
 
 A Fase 04 usa `CidadeComEstadoDto` com campos obrigatorios (`String`).
 
 A diferenca:
 
 ```text
-Fase 02: CidadeDto podia existir sem dados do estado
+Model inflado: Cidade poderia existir sem dados do estado
 Fase 04: CidadeComEstadoDto sempre tem os dados do estado
 
-Fase 02: mesclava escrita e leitura no mesmo DTO
+Model inflado: mescla escrita e leitura na mesma classe
 Fase 04: Cidade (Model) para escrita, CidadeComEstadoDto para leitura com JOIN
 ```
 
@@ -88,16 +88,16 @@ Se o dado vem de um JOIN: crie um DTO com nome que descreve o que a consulta ret
 ```dart
 class CidadeDao {
   // Leitura com JOIN → retorna DTO
-  Future<List<CidadeComEstadoDto>> findAll() async { ... }
-  Future<List<CidadeComEstadoDto>> findByEstado(int estadoId) async { ... }
+  Future<List<CidadeComEstadoDto>> buscarTodos() async { ... }
+  Future<List<CidadeComEstadoDto>> buscarPorEstado(int estadoId) async { ... }
 
   // Leitura simples (para editar) → retorna Model
-  Future<Cidade?> findById(int id) async { ... }
+  Future<Cidade?> buscarPorId(int id) async { ... }
 
   // Escrita → recebe Model
-  Future<void> insert(Cidade cidade) async { ... }
-  Future<void> update(Cidade cidade) async { ... }
-  Future<void> delete(int id) async { ... }
+  Future<void> inserir(Cidade cidade) async { ... }
+  Future<void> atualizar(Cidade cidade) async { ... }
+  Future<void> excluir(int id) async { ... }
 }
 ```
 

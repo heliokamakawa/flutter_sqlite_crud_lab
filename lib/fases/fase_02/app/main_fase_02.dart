@@ -68,4 +68,3 @@ class Fase02HomePage extends StatelessWidget {
     );
   }
 }
-

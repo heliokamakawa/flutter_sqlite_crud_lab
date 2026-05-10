@@ -24,15 +24,15 @@ Metodos do DAO usam nomes do mundo do banco:
 
 ```dart
 class EstadoDao {
-  Future<List<Estado>> findAll() async { ... }
-  Future<Estado?> findById(int id) async { ... }
-  Future<void> insert(Estado estado) async { ... }
-  Future<void> update(Estado estado) async { ... }
-  Future<void> delete(int id) async { ... }
+  Future<List<Estado>> buscarTodos() async { ... }
+  Future<Estado?> buscarPorId(int id) async { ... }
+  Future<void> inserir(Estado estado) async { ... }
+  Future<void> atualizar(Estado estado) async { ... }
+  Future<void> excluir(int id) async { ... }
 }
 ```
 
-`findAll`, `insert`, `update`, `delete` — vocabulario de banco de dados.
+`buscarTodos`, `insert`, `update`, `delete` — vocabulario de banco de dados.
 
 O DAO nao toma decisoes de negocio. Ele executa o que recebe.
 
@@ -60,9 +60,9 @@ Mesmo comportamento, vocabularios diferentes:
 
 ```dart
 // DAO — fala o idioma do banco
-await dao.insert(estado);
-await dao.findAll();
-await dao.delete(id);
+await dao.inserir(estado);
+await dao.buscarTodos();
+await dao.excluir(id);
 
 // Repository — fala o idioma do dominio
 await repository.salvar(estado);
@@ -72,7 +72,7 @@ await repository.excluir(id);
 
 Para o resultado final do usuario, e identico.
 
-A diferenca esta em quem le o codigo: um desenvolvedor novo entende melhor `salvar` e `listarTodos` do que `insert` e `findAll`.
+A diferenca esta em quem le o codigo: um desenvolvedor novo entende melhor `salvar` e `listarTodos` do que `insert` e `buscarTodos`.
 
 ## Repository pode fazer mais do que DAO
 
@@ -92,7 +92,7 @@ class EstadoRepository implements IEstadoRepository {
     final cached = _cache.obter('estados');
     if (cached != null) return cached;
 
-    final estados = await _dao.findAll();
+    final estados = await _dao.buscarTodos();
     _cache.armazenar('estados', estados);
     return estados;
   }
@@ -114,8 +114,8 @@ class RelatorioRepository implements IRelatorioRepository {
 
   @override
   Future<List<EstadoComCidadesDto>> listarEstadosComCidades() async {
-    final estados = await _estadoDao.findAll();
-    final cidades = await _cidadeDao.findAll();
+    final estados = await _estadoDao.buscarTodos();
+    final cidades = await _cidadeDao.buscarTodos();
 
     // combina os dados
     return estados.map((estado) {
@@ -135,7 +135,7 @@ Em projetos pequenos com uma unica fonte de dados (SQLite local), o Repository e
 ```dart
 class EstadoRepository implements IEstadoRepository {
   @override
-  Future<List<Estado>> listarTodos() => _dao.findAll(); // so repassa
+  Future<List<Estado>> listarTodos() => _dao.buscarTodos(); // so repassa
 }
 ```
 

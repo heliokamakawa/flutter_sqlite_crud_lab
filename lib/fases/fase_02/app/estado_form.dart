@@ -38,7 +38,7 @@ class _EstadoFormPageState extends State<EstadoFormPage> {
       return;
     }
 
-    final Database banco = await Fase02Database.instance.database;
+    final Database banco = await Conexao.instancia.bancoDados;
 
     await banco.insert('estado', estado.toMap());
 
@@ -56,7 +56,7 @@ class _EstadoFormPageState extends State<EstadoFormPage> {
       return;
     }
 
-    final Database banco = await Fase02Database.instance.database;
+    final Database banco = await Conexao.instancia.bancoDados;
 
     await banco.update(
       'estado',

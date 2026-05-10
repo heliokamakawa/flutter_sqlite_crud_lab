@@ -21,13 +21,13 @@ Use Singleton quando:
 ```dart
 class MinhaClasse {
   MinhaClasse._();                              // construtor privado
-  static final MinhaClasse instance = MinhaClasse._(); // instancia unica
+  static final MinhaClasse instancia = MinhaClasse._(); // instancia unica
 }
 ```
 
 - `MinhaClasse._()` — o construtor e privado, entao ninguem de fora consegue fazer `MinhaClasse()`;
-- `instance` e `static final` — existe uma unica vez, compartilhada por todos;
-- quem precisar usa `MinhaClasse.instance`.
+- `instancia` e `static final` — existe uma unica vez, compartilhada por todos;
+- quem precisar usa `MinhaClasse.instancia`.
 
 ## Arquivo principal
 
@@ -50,34 +50,28 @@ Assim, a classe de conexao nao precisa carregar todo o texto SQL dentro do `onCr
 ## Singleton
 
 ```dart
-class Fase02Database {
-  Fase02Database._();
+class Conexao {
+  Conexao._();
 
-  static final Fase02Database instance = Fase02Database._();
+  static final Conexao instancia = Conexao._();
 
-  Database? _database;
+  Database? _bancoDados;
 }
 ```
 
 Pontos importantes:
 
 - o construtor `_()` e privado;
-- `instance` guarda a instancia unica da classe;
-- `_database` guarda a conexao aberta;
-- o getter `database` reaproveita a conexao quando ela ja existe.
+- `instancia` guarda a instancia unica da classe;
+- `_bancoDados` guarda a conexao aberta;
+- o getter `bancoDados` reaproveita a conexao quando ela ja existe.
 
 ## Uso nas telas
 
-Na Fase 01:
+Na Fase 01 e na Fase 02:
 
 ```dart
-final Database banco = await abrirConexaoBanco();
-```
-
-Na Fase 02:
-
-```dart
-final Database banco = await Fase02Database.instance.database;
+final Database banco = await Conexao.instancia.bancoDados;
 ```
 
 ## Por que melhora?

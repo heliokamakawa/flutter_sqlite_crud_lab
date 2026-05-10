@@ -10,29 +10,29 @@ lib/fases/fase_03/dao/estado_dao.dart
 
 ```dart
 class EstadoDao {
-  EstadoDao(this._database);
+  EstadoDao(this._bancoDados);
 
-  final Database _database;
+  final Database _bancoDados;
 
   static const String _tabela = 'estado';
 
-  Future<List<Estado>> findAll() async { ... }
-  Future<Estado?> findById(int id) async { ... }
-  Future<void> insert(Estado estado) async { ... }
-  Future<void> update(Estado estado) async { ... }
-  Future<void> delete(int id) async { ... }
+  Future<List<Estado>> buscarTodos() async { ... }
+  Future<Estado?> buscarPorId(int id) async { ... }
+  Future<void> inserir(Estado estado) async { ... }
+  Future<void> atualizar(Estado estado) async { ... }
+  Future<void> excluir(int id) async { ... }
 }
 ```
 
-O DAO recebe a conexao pelo construtor (`_database`).
+O DAO recebe a conexao pelo construtor (`_bancoDados`).
 
 A constante `_tabela` evita repetir o nome da tabela em cada metodo.
 
-## findAll
+## buscarTodos
 
 ```dart
-Future<List<Estado>> findAll() async {
-  final List<Map<String, dynamic>> resultado = await _database.rawQuery(
+Future<List<Estado>> buscarTodos() async {
+  final List<Map<String, dynamic>> resultado = await _bancoDados.rawQuery(
     'SELECT id, nome, sigla FROM $_tabela ORDER BY nome',
   );
 
@@ -44,11 +44,11 @@ Retorna todos os estados ordenados por nome.
 
 O `rawQuery` retorna uma lista de mapas. O `Estado.fromMap` converte cada mapa em um objeto `Estado`.
 
-## findById
+## buscarPorId
 
 ```dart
-Future<Estado?> findById(int id) async {
-  final List<Map<String, dynamic>> resultado = await _database.rawQuery(
+Future<Estado?> buscarPorId(int id) async {
+  final List<Map<String, dynamic>> resultado = await _bancoDados.rawQuery(
     'SELECT id, nome, sigla FROM $_tabela WHERE id = ?',
     [id],
   );
@@ -70,8 +70,8 @@ Isso evita SQL injection — o valor nunca e concatenado diretamente na string.
 ## insert
 
 ```dart
-Future<void> insert(Estado estado) async {
-  await _database.insert(_tabela, estado.toMap());
+Future<void> inserir(Estado estado) async {
+  await _bancoDados.insert(_tabela, estado.toMap());
 }
 ```
 
@@ -82,8 +82,8 @@ Insere o estado no banco.
 ## update
 
 ```dart
-Future<void> update(Estado estado) async {
-  await _database.update(
+Future<void> atualizar(Estado estado) async {
+  await _bancoDados.update(
     _tabela,
     estado.toMap(),
     where: 'id = ?',
@@ -99,8 +99,8 @@ O `id` nao vai no mapa de dados — ele vai em `whereArgs`, como criterio de fil
 ## delete
 
 ```dart
-Future<void> delete(int id) async {
-  await _database.delete(
+Future<void> excluir(int id) async {
+  await _bancoDados.delete(
     _tabela,
     where: 'id = ?',
     whereArgs: [id],
@@ -115,7 +115,7 @@ Remove o estado pelo id.
 Antes (Fase 02):
 
 ```dart
-final Database banco = await Fase02Database.instance.database;
+final Database banco = await Conexao.instancia.bancoDados;
 
 final List<Map<String, dynamic>> resultado = await banco.rawQuery(
   'SELECT id, nome, sigla FROM estado ORDER BY nome',
@@ -127,10 +127,10 @@ final List<Estado> estados = resultado.map(Estado.fromMap).toList();
 Depois (Fase 03):
 
 ```dart
-final Database banco = await Fase03Database.instance.database;
+final Database banco = await Conexao.instancia.bancoDados;
 final EstadoDao dao = EstadoDao(banco);
 
-final List<Estado> estados = await dao.findAll();
+final List<Estado> estados = await dao.buscarTodos();
 ```
 
 A tela deixou de saber SQL.

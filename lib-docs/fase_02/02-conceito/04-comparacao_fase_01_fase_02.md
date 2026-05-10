@@ -5,21 +5,18 @@
 Fase 01:
 
 ```dart
-Future<Database> abrirConexaoBanco() async {
-  // repetida em varias telas
-}
+final Database banco = await Conexao.instancia.bancoDados;
 ```
 
 Fase 02:
 
 ```dart
-final Database banco = await Fase02Database.instance.database;
+final Database banco = await Conexao.instancia.bancoDados;
 ```
 
 Resultado:
 
-- menos repeticao;
-- banco centralizado;
+- mesmo padrao de conexao nas duas fases;
 - mudancas mais localizadas;
 - conexao reutilizada enquanto estiver aberta.
 
@@ -83,9 +80,9 @@ List<Cidade> cidades = [];
 
 Resultado:
 
-- a tela acessa `cidade.nome`, `cidade.estadoId` e `cidade.estadoDescricao`;
+- a tela acessa `cidade.nome` e `cidade.estadoId`;
 - o `Map` fica restrito ao momento de conversao em `Cidade.fromMap`;
-- campos do JOIN ficam como opcionais no proprio model.
+- `Cidade` representa somente a tabela `cidade`.
 
 ## Inserir e alterar
 

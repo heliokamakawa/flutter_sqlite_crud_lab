@@ -120,13 +120,8 @@ String get descricao => '$nome ($sigla)';
 
 ```dart
 class Cidade {
-  Cidade({
-    this.id,
-    required String nome,
-    required this.estadoId,
-    this.estadoNome,
-    this.estadoSigla,
-  }) : nome = nome.trim() {
+  Cidade({this.id, required String nome, required this.estadoId})
+    : nome = nome.trim() {
     if (this.nome.isEmpty) {
       throw ArgumentError('Nome da cidade e obrigatorio.');
     }
@@ -138,33 +133,29 @@ class Cidade {
   final int? id;
   final String nome;
   final int estadoId;
-  final String? estadoNome;
-  final String? estadoSigla;
 
   factory Cidade.fromMap(Map<String, dynamic> map) { ... }
   Map<String, dynamic> toMap({bool incluirId = false}) { ... }
-  String get estadoDescricao { ... }
 }
 ```
 
-### Por que estadoNome e estadoSigla estao em Cidade
+### Por que Cidade nao tem nome nem sigla do estado
 
-A consulta de listagem usa JOIN:
+`Cidade` representa somente a tabela `cidade`.
 
-```sql
-SELECT cidade.id, cidade.nome, cidade.estado_id,
-       estado.nome AS estado_nome, estado.sigla AS estado_sigla
-FROM cidade
-LEFT JOIN estado ON estado.id = cidade.estado_id
+Por isso, ela guarda apenas:
+
+```text
+id
+nome
+estadoId
 ```
 
-O resultado traz campos de duas tabelas.
+Dados como `estadoNome` e `estadoSigla` pertencem ao resultado de uma consulta com JOIN. Esse tipo de resultado sera representado por um DTO especifico na Fase 04: `CidadeComEstadoDto`.
 
-Guardar esses campos em `Cidade` evita criar uma classe extra so para transportar o resultado da consulta. A tela usa `cidade.estadoDescricao` e pronto.
+### toMap grava somente colunas da tabela cidade
 
-### toMap nao inclui estadoNome e estadoSigla
-
-Porque a tabela `cidade` nao tem essas colunas.
+Porque a tabela `cidade` tem apenas `id`, `nome` e `estado_id`.
 
 ```dart
 Map<String, dynamic> toMap({bool incluirId = false}) {
@@ -172,23 +163,9 @@ Map<String, dynamic> toMap({bool incluirId = false}) {
     if (incluirId && id != null) 'id': id,
     'nome': nome,
     'estado_id': estadoId,
-    // estadoNome e estadoSigla nao vao ao banco
   };
 }
 ```
-
-### estadoDescricao
-
-```dart
-String get estadoDescricao {
-  final String? sigla = estadoSigla;
-  if (sigla == null) return 'nao encontrado';
-  return sigla;
-}
-```
-
-Trata o caso em que o JOIN nao encontrou o estado (LEFT JOIN retorna null).
-
 ## Model nao e Map
 
 O SQLite retorna dados como `Map<String, dynamic>`.

@@ -48,7 +48,7 @@ Compare com `lib/fases/fase_04/app/estado_lista.dart`:
 Observe:
 - `_listarEstados` chama `widget.service.listarTodos()`
 - `_excluirEstado` chama `widget.service.excluir(id)` e trata `StateError`
-- a tela nao conhece DAO, DatabaseHelper, nem nenhuma implementacao
+- a tela nao conhece DAO, Conexao, nem nenhuma implementacao
 
 ### 5. Composicao das dependencias
 

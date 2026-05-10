@@ -72,7 +72,7 @@ DAO (dao/) — acesso ao banco
 
 - `Model` com `fromMap`, `toMap` e validacoes;
 - `DTO` para resultado de JOIN;
-- `DatabaseHelper` com conexao singleton;
+- `Conexao` com conexao singleton;
 - a estrutura das telas (lista + formulario).
 
 ## Resultado esperado

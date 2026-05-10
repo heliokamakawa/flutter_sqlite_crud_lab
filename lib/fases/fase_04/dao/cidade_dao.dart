@@ -4,9 +4,9 @@ import '../dtos/cidade_com_estado_dto.dart';
 import '../models/cidade.dart';
 
 class CidadeDao {
-  CidadeDao(this._database);
+  CidadeDao(this._bancoDados);
 
-  final Database _database;
+  final Database _bancoDados;
 
   static const String _tabela = 'cidade';
 
@@ -21,16 +21,16 @@ class CidadeDao {
     INNER JOIN estado ON estado.id = cidade.estado_id
   ''';
 
-  Future<List<CidadeComEstadoDto>> findAll() async {
-    final List<Map<String, dynamic>> resultado = await _database.rawQuery(
+  Future<List<CidadeComEstadoDto>> buscarTodos() async {
+    final List<Map<String, dynamic>> resultado = await _bancoDados.rawQuery(
       '$_selectComEstado ORDER BY cidade.nome',
     );
 
     return resultado.map(CidadeComEstadoDto.fromMap).toList();
   }
 
-  Future<List<CidadeComEstadoDto>> findByEstado(int estadoId) async {
-    final List<Map<String, dynamic>> resultado = await _database.rawQuery(
+  Future<List<CidadeComEstadoDto>> buscarPorEstado(int estadoId) async {
+    final List<Map<String, dynamic>> resultado = await _bancoDados.rawQuery(
       '$_selectComEstado WHERE cidade.estado_id = ? ORDER BY cidade.nome',
       [estadoId],
     );
@@ -38,8 +38,8 @@ class CidadeDao {
     return resultado.map(CidadeComEstadoDto.fromMap).toList();
   }
 
-  Future<Cidade?> findById(int id) async {
-    final List<Map<String, dynamic>> resultado = await _database.rawQuery(
+  Future<Cidade?> buscarPorId(int id) async {
+    final List<Map<String, dynamic>> resultado = await _bancoDados.rawQuery(
       'SELECT id, nome, estado_id FROM $_tabela WHERE id = ?',
       [id],
     );
@@ -51,12 +51,12 @@ class CidadeDao {
     return Cidade.fromMap(resultado.first);
   }
 
-  Future<void> insert(Cidade cidade) async {
-    await _database.insert(_tabela, cidade.toMap());
+  Future<void> inserir(Cidade cidade) async {
+    await _bancoDados.insert(_tabela, cidade.toMap());
   }
 
-  Future<void> update(Cidade cidade) async {
-    await _database.update(
+  Future<void> atualizar(Cidade cidade) async {
+    await _bancoDados.update(
       _tabela,
       cidade.toMap(),
       where: 'id = ?',
@@ -64,7 +64,7 @@ class CidadeDao {
     );
   }
 
-  Future<void> delete(int id) async {
-    await _database.delete(_tabela, where: 'id = ?', whereArgs: [id]);
+  Future<void> excluir(int id) async {
+    await _bancoDados.delete(_tabela, where: 'id = ?', whereArgs: [id]);
   }
 }

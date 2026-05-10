@@ -22,7 +22,7 @@ class _CidadeListaPageState extends State<CidadeListaPage> {
   }
 
   Future<void> listarCidades() async {
-    final Database banco = await Fase02Database.instance.database;
+    final Database banco = await Conexao.instancia.bancoDados;
 
     final List<Map<String, dynamic>> resultado = await banco.rawQuery('''
       SELECT
@@ -36,8 +36,9 @@ class _CidadeListaPageState extends State<CidadeListaPage> {
       ORDER BY cidade.nome
     ''');
 
-    final List<Cidade> cidadesEncontradas =
-        resultado.map(Cidade.fromMap).toList();
+    final List<Cidade> cidadesEncontradas = resultado
+        .map(Cidade.fromMap)
+        .toList();
 
     if (!mounted) {
       return;
@@ -49,7 +50,7 @@ class _CidadeListaPageState extends State<CidadeListaPage> {
   }
 
   Future<void> excluirCidade(int id) async {
-    final Database banco = await Fase02Database.instance.database;
+    final Database banco = await Conexao.instancia.bancoDados;
 
     await banco.delete('cidade', where: 'id = ?', whereArgs: [id]);
 
@@ -89,8 +90,7 @@ class _CidadeListaPageState extends State<CidadeListaPage> {
               child: ListTile(
                 title: Text(cidade.nome),
                 subtitle: Text(
-                  'id: ${cidade.id} | estado_id: ${cidade.estadoId} | '
-                  'estado: ${cidade.estadoDescricao}',
+                  'id: ${cidade.id} | estado_id: ${cidade.estadoId}',
                 ),
                 trailing: Wrap(
                   spacing: 4,

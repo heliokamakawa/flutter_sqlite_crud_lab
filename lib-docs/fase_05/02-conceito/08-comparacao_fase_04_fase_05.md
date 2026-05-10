@@ -42,7 +42,7 @@ lib/fases/fase_04/
 ```text
 lib/fases/fase_05/
 ├── core/
-│   └── database_helper.dart        ← renomeado e na pasta core
+│   └── conexao.dart        ← renomeado e na pasta core
 ├── models/
 │   ├── estado.dart
 │   └── cidade.dart
@@ -83,12 +83,12 @@ class EstadoListaPage extends StatefulWidget {
 
 class _EstadoListaPageState extends State<EstadoListaPage> {
   Future<void> _carregar() async {
-    final lista = await widget.dao.findAll();
+    final lista = await widget.dao.buscarTodos();
     setState(() => _estados = lista);
   }
 
   Future<void> _excluir(int id) async {
-    await widget.dao.delete(id);  // sem verificacao de cidades
+    await widget.dao.excluir(id);  // sem verificacao de cidades
     await _carregar();
   }
 }
@@ -138,15 +138,15 @@ O que melhorou:
 
 ```dart
 // Opcao 1: sem verificacao (erro silencioso ou excecao nao tratada)
-await widget.dao.delete(id);
+await widget.dao.excluir(id);
 
 // Opcao 2: verificacao na tela (regra de negocio vazou para a apresentacao)
-final cidades = await widget.cidadeDao.findByEstado(id);
+final cidades = await widget.cidadeDao.buscarPorEstado(id);
 if (cidades.isNotEmpty) {
   mostrarMensagem('Estado possui cidades.');
   return;
 }
-await widget.estadoDao.delete(id);
+await widget.estadoDao.excluir(id);
 ```
 
 #### Fase 05 — regra no Service
@@ -175,7 +175,7 @@ A regra esta no Service. Se outra tela tambem excluir estados, ela usa o mesmo S
 
 ```dart
 Future<void> _abrirEstados(BuildContext context) async {
-  final banco = await Fase04Database.instance.database;
+  final banco = await Conexao.instancia.bancoDados;
   final dao = EstadoDao(banco);
 
   Navigator.push(
@@ -191,7 +191,7 @@ Future<void> _abrirEstados(BuildContext context) async {
 
 ```dart
 Future<void> _abrirEstados(BuildContext context) async {
-  final banco = await DatabaseHelper.instance.database;
+  final banco = await Conexao.instancia.bancoDados;
 
   final estadoDao = EstadoDao(banco);
   final cidadeDao = CidadeDao(banco);
@@ -225,11 +225,11 @@ As telas sao mais limpas porque nao precisam saber como as dependencias foram cr
 ```text
 Fase 04 — vocabulario do banco (DAO)    Fase 05 — vocabulario do dominio (Repository)
 ───────────────────────────────────     ────────────────────────────────────────────
-dao.findAll()                           repository.listarTodos()
-dao.findById(id)                        repository.buscarPorId(id)
-dao.insert(estado)                      repository.salvar(estado)
-dao.update(estado)                      repository.atualizar(estado)
-dao.delete(id)                          repository.excluir(id)
+dao.buscarTodos()                           repository.listarTodos()
+dao.buscarPorId(id)                        repository.buscarPorId(id)
+dao.inserir(estado)                      repository.salvar(estado)
+dao.atualizar(estado)                      repository.atualizar(estado)
+dao.excluir(id)                          repository.excluir(id)
 ```
 
 O DAO ainda existe na Fase 05 — mas a tela nao o ve.
@@ -250,7 +250,7 @@ Aspecto                  Fase 04                  Fase 05
 ───────────────────────  ───────────────────────  ─────────────────────────────
 Tela conhece             EstadoDao (concreto)      IEstadoRepository (interface)
 Verificacao de cidades   Na tela ou ausente        No EstadoService
-Vocabulario da tela      findAll, delete           listarTodos, excluir
+Vocabulario da tela      buscarTodos, delete           listarTodos, excluir
 Regras de negocio        Dispersas                 Centralizadas no Service
 Testabilidade da tela    Precisa de banco          Aceita repositorio em memoria
 Camadas                  Tela → DAO → SQLite       Tela → Service → Repo → DAO → SQLite

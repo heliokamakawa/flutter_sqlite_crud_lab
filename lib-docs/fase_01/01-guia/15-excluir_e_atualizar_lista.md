@@ -12,7 +12,7 @@ Trecho:
 
 ```dart
 Future<void> excluirCidade(int id) async {
-  final Database banco = await abrirConexaoBanco();
+  final Database banco = await Conexao.instancia.bancoDados;
 
   await banco.rawDelete('DELETE FROM cidade WHERE id = ?', [id]);
 
@@ -101,4 +101,3 @@ Na alteracao, a lista abre o formulario, espera `pop(true)` e so depois recarreg
 ## Ideia principal
 
 A tela so mostra dados atualizados quando a lista em memoria e sincronizada de novo com o banco.
-

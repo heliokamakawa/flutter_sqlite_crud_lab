@@ -23,7 +23,7 @@ Com DAO, a tela chama um metodo:
 
 ```dart
 // dentro da tela
-final List<Estado> estados = await dao.findAll();
+final List<Estado> estados = await dao.buscarTodos();
 ```
 
 A diferenca:
@@ -52,11 +52,11 @@ O DAO nao conhece:
 O padrao DAO costuma ter cinco operacoes basicas:
 
 ```text
-findAll()        → lista todos os registros
-findById(id)     → busca um registro pelo id
-insert(entidade) → insere um novo registro
-update(entidade) → atualiza um registro existente
-delete(id)       → remove um registro
+buscarTodos()        → lista todos os registros
+buscarPorId(id)     → busca um registro pelo id
+inserir(entidade) → insere um novo registro
+atualizar(entidade) → atualiza um registro existente
+excluir(id)       → remove um registro
 ```
 
 Esses nomes sao convencionais. Voce vai encontra-los com frequencia em DAOs de qualquer linguagem ou framework.
@@ -75,8 +75,8 @@ Exemplo:
 class EstadoDao {
   // ...
 
-  Future<List<Estado>> findAll() async {
-    final List<Map<String, dynamic>> resultado = await _database.rawQuery(
+  Future<List<Estado>> buscarTodos() async {
+    final List<Map<String, dynamic>> resultado = await _bancoDados.rawQuery(
       'SELECT id, nome, sigla FROM estado ORDER BY nome',
     );
     return resultado.map(Estado.fromMap).toList();
@@ -90,16 +90,16 @@ Nesta fase, o DAO recebe a conexao pelo construtor:
 
 ```dart
 class EstadoDao {
-  EstadoDao(this._database);
+  EstadoDao(this._bancoDados);
 
-  final Database _database;
+  final Database _bancoDados;
 }
 ```
 
 A tela obtém a conexao e passa para o DAO:
 
 ```dart
-final Database banco = await Fase03Database.instance.database;
+final Database banco = await Conexao.instancia.bancoDados;
 final EstadoDao dao = EstadoDao(banco);
 ```
 

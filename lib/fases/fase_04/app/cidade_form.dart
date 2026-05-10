@@ -36,8 +36,8 @@ class _CidadeFormPageState extends State<CidadeFormPage> {
   }
 
   Future<void> _carregarEstados() async {
-    final Database banco = await Fase04Database.instance.database;
-    final List<Estado> encontrados = await EstadoDao(banco).findAll();
+    final Database banco = await Conexao.instancia.bancoDados;
+    final List<Estado> encontrados = await EstadoDao(banco).buscarTodos();
 
     if (!mounted) return;
 
@@ -56,13 +56,13 @@ class _CidadeFormPageState extends State<CidadeFormPage> {
 
     if (cidade == null) return;
 
-    final Database banco = await Fase04Database.instance.database;
+    final Database banco = await Conexao.instancia.bancoDados;
     final CidadeDao dao = CidadeDao(banco);
 
     if (editando) {
-      await dao.update(cidade);
+      await dao.atualizar(cidade);
     } else {
-      await dao.insert(cidade);
+      await dao.inserir(cidade);
     }
 
     if (!mounted) return;
@@ -88,9 +88,7 @@ class _CidadeFormPageState extends State<CidadeFormPage> {
   }
 
   void _mostrarMensagem(String texto) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(texto)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(texto)));
   }
 
   @override

@@ -36,14 +36,15 @@ class _CidadeFormPageState extends State<CidadeFormPage> {
   }
 
   Future<void> listarEstados() async {
-    final Database banco = await Fase02Database.instance.database;
+    final Database banco = await Conexao.instancia.bancoDados;
 
     final List<Map<String, dynamic>> resultado = await banco.rawQuery(
       'SELECT id, nome, sigla FROM estado ORDER BY nome',
     );
 
-    final List<Estado> estadosEncontrados =
-        resultado.map(Estado.fromMap).toList();
+    final List<Estado> estadosEncontrados = resultado
+        .map(Estado.fromMap)
+        .toList();
 
     if (!mounted) {
       return;
@@ -64,7 +65,7 @@ class _CidadeFormPageState extends State<CidadeFormPage> {
       return;
     }
 
-    final Database banco = await Fase02Database.instance.database;
+    final Database banco = await Conexao.instancia.bancoDados;
 
     await banco.insert('cidade', cidade.toMap());
 
@@ -82,7 +83,7 @@ class _CidadeFormPageState extends State<CidadeFormPage> {
       return;
     }
 
-    final Database banco = await Fase02Database.instance.database;
+    final Database banco = await Conexao.instancia.bancoDados;
 
     await banco.update(
       'cidade',

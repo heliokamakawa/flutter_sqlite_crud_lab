@@ -8,22 +8,13 @@ class Conexao {
 
   static final Conexao instancia = Conexao._();
 
-  static const String _nomeBanco = 'fase_04_associacao.db';
-  static const String _nomeBancoWeb = 'fase_04_associacao_web.db';
+  static const String _nomeBanco = 'fase_05_arquitetura.db';
+  static const String _nomeBancoWeb = 'fase_05_arquitetura_web.db';
 
   Database? _bancoDados;
 
   Future<Database> get bancoDados async {
-    final Database? bancoAberto = _bancoDados;
-
-    if (bancoAberto != null) {
-      return bancoAberto;
-    }
-
-    final Database novoBanco = await _abrir();
-    _bancoDados = novoBanco;
-
-    return novoBanco;
+    return _bancoDados ??= await _abrir();
   }
 
   Future<void> fechar() async {
@@ -36,18 +27,18 @@ class Conexao {
       databaseFactory = databaseFactoryFfiWeb;
     }
 
-    final String caminhoBanco = kIsWeb
+    final String caminho = kIsWeb
         ? _nomeBancoWeb
         : p.join(await getDatabasesPath(), _nomeBanco);
 
     return openDatabase(
-      caminhoBanco,
+      caminho,
       version: 1,
       onCreate: (Database db, int version) async {
         await db.execute('''
           CREATE TABLE estado (
-            id   INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT NOT NULL,
+            id    INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome  TEXT NOT NULL,
             sigla TEXT NOT NULL
           )
         ''');
@@ -78,9 +69,6 @@ class Conexao {
         );
         await db.execute(
           "INSERT INTO cidade (nome, estado_id) VALUES ('Campinas', 1)",
-        );
-        await db.execute(
-          "INSERT INTO cidade (nome, estado_id) VALUES ('Santos', 1)",
         );
         await db.execute(
           "INSERT INTO cidade (nome, estado_id) VALUES ('Rio de Janeiro', 2)",

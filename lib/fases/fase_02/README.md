@@ -1,4 +1,4 @@
-# Fase 02 - Conexao singleton, Model e DTO
+# Fase 02 - Conexao singleton e Model
 
 ## Objetivo da fase
 
@@ -8,13 +8,12 @@ O foco e separar os primeiros pontos que ficaram repetidos:
 
 - conexao com banco;
 - representacao dos dados das tabelas;
-- objetos usados para transporte/exibicao de dados.
 
 ## O que muda em relacao a Fase 01
 
-Na Fase 01, cada tela possuia sua propria funcao `abrirConexaoBanco`.
+Na Fase 01, a conexao ja fica centralizada em `Conexao`, mas as telas ainda trabalham com `Map` e SQL direto.
 
-Na Fase 02, a conexao fica centralizada em:
+Na Fase 02, a conexao continua centralizada em:
 
 ```text
 database/database.dart
@@ -29,13 +28,6 @@ models/estado.dart
 models/cidade.dart
 ```
 
-E as telas que precisam de dados combinados ou simplificados usam DTOs:
-
-```text
-dtos/estado_dto.dart
-dtos/cidade_dto.dart
-```
-
 ## Model nesta fase
 
 Model representa um dado principal do sistema.
@@ -47,22 +39,12 @@ Nesta fase:
 
 Os models representam entidades e validam dados principais.
 
-Os DTOs concentram a conversao entre `Map` e objetos Dart para conversar com o SQLite.
-
-## DTO nesta fase
-
-DTO representa um formato de transporte de dados.
-
-Nesta fase:
-
-- `EstadoDto` e usado para opcoes de selecao;
-- `CidadeDto` e usado para a listagem com dados da cidade e do estado.
-
-O DTO nao precisa representar exatamente uma tabela.
+Nesta fase, `Cidade` representa somente a tabela `cidade`: `id`, `nome` e `estadoId`.
+Dados de estado vindos de JOIN ficam para a Fase 04, quando entra `CidadeComEstadoDto`.
 
 ## Singleton nesta fase
 
-A classe `Fase02Database` adota Singleton para existir como ponto unico de acesso a conexao.
+A classe `Conexao` adota Singleton para existir como ponto unico de acesso a conexao.
 
 Isso evita repetir a abertura do banco em cada tela.
 

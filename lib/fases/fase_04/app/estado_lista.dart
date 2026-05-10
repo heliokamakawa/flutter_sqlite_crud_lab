@@ -23,10 +23,10 @@ class _EstadoListaPageState extends State<EstadoListaPage> {
   }
 
   Future<void> listarEstados() async {
-    final Database banco = await Fase04Database.instance.database;
+    final Database banco = await Conexao.instancia.bancoDados;
     final EstadoDao dao = EstadoDao(banco);
 
-    final List<Estado> encontrados = await dao.findAll();
+    final List<Estado> encontrados = await dao.buscarTodos();
 
     if (!mounted) return;
 
@@ -36,17 +36,17 @@ class _EstadoListaPageState extends State<EstadoListaPage> {
   }
 
   Future<void> excluirEstado(int id) async {
-    final Database banco = await Fase04Database.instance.database;
+    final Database banco = await Conexao.instancia.bancoDados;
     final EstadoDao dao = EstadoDao(banco);
 
-    await dao.delete(id);
+    await dao.excluir(id);
     await listarEstados();
   }
 
   Future<void> abrirFormulario({Estado? estado}) async {
-    final bool? salvou = await Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => EstadoFormPage(estado: estado)),
-    );
+    final bool? salvou = await Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (_) => EstadoFormPage(estado: estado)));
 
     if (salvou == true) {
       await listarEstados();

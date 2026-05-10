@@ -1,66 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
-Future<Database> abrirConexaoBanco() async {
-  if (kIsWeb) {
-    databaseFactory = databaseFactoryFfiWeb;
-  }
-
-  final String caminhoBanco = kIsWeb
-      ? 'fase_01_crud_raiz_web.db'
-      : p.join(await getDatabasesPath(), 'fase_01_crud_raiz.db');
-
-  return openDatabase(
-    caminhoBanco,
-    version: 1,
-    onCreate: (Database db, int version) async {
-      await db.execute('''
-        CREATE TABLE estado (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          nome TEXT NOT NULL,
-          sigla TEXT NOT NULL
-        )
-      ''');
-
-      await db.execute('''
-        CREATE TABLE cidade (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          nome TEXT NOT NULL,
-          estado_id INTEGER NOT NULL
-        )
-      ''');
-
-      await db.rawInsert('INSERT INTO estado (nome, sigla) VALUES (?, ?)', [
-        'Sao Paulo',
-        'SP',
-      ]);
-      await db.rawInsert('INSERT INTO estado (nome, sigla) VALUES (?, ?)', [
-        'Rio de Janeiro',
-        'RJ',
-      ]);
-      await db.rawInsert('INSERT INTO estado (nome, sigla) VALUES (?, ?)', [
-        'Minas Gerais',
-        'MG',
-      ]);
-
-      await db.rawInsert('INSERT INTO cidade (nome, estado_id) VALUES (?, ?)', [
-        'Sao Paulo',
-        1,
-      ]);
-      await db.rawInsert('INSERT INTO cidade (nome, estado_id) VALUES (?, ?)', [
-        'Rio de Janeiro',
-        2,
-      ]);
-      await db.rawInsert('INSERT INTO cidade (nome, estado_id) VALUES (?, ?)', [
-        'Belo Horizonte',
-        3,
-      ]);
-    },
-  );
-}
+import '../database/conexao.dart';
 
 class EstadoFormPage extends StatefulWidget {
   const EstadoFormPage({super.key, this.estado});
@@ -98,7 +39,7 @@ class _EstadoFormPageState extends State<EstadoFormPage> {
       return;
     }
 
-    final Database banco = await abrirConexaoBanco();
+    final Database banco = await Conexao.instancia.bancoDados;
 
     await banco.rawInsert('INSERT INTO estado (nome, sigla) VALUES (?, ?)', [
       nome,
@@ -122,7 +63,7 @@ class _EstadoFormPageState extends State<EstadoFormPage> {
       return;
     }
 
-    final Database banco = await abrirConexaoBanco();
+    final Database banco = await Conexao.instancia.bancoDados;
 
     await banco.rawUpdate(
       'UPDATE estado SET nome = ?, sigla = ? WHERE id = ?',

@@ -4,43 +4,32 @@
 
 Porque as telas fazem tudo diretamente:
 
-- abrem o banco;
-- criam tabelas;
+- acessam a conexao;
 - escrevem SQL;
 - leem mapas;
 - atualizam a interface.
 
 Isso deixa o funcionamento visivel para estudo.
 
-## Repeticao da conexao
+## Conexao padronizada
 
-O mesmo trecho aparece em quatro arquivos:
-
-```dart
-Future<Database> abrirConexaoBanco() async {
-  // define plataforma
-  // monta caminho
-  // chama openDatabase
-  // cria tabelas no onCreate
-}
-```
-
-Arquivos:
+A abertura do banco fica centralizada em:
 
 ```text
-estado_lista.dart
-estado_form.dart
-cidade_lista.dart
-cidade_form.dart
+lib/fases/fase_01/database/conexao.dart
+```
+
+As telas usam:
+
+```dart
+final Database banco = await Conexao.instancia.bancoDados;
 ```
 
 ## Problema pratico
 
-Se o nome do banco mudar, sera preciso alterar varios arquivos.
+Mesmo com a conexao centralizada, o SQL ainda fica nas telas.
 
-Se uma tabela mudar, sera preciso repetir a mudanca em todas as copias de `onCreate`.
-
-Esse e o tipo de problema que motiva a proxima fase.
+Esse e o tipo de problema que motiva as proximas fases.
 
 ## SQL espalhado
 
@@ -116,4 +105,3 @@ A proxima evolucao pode separar:
 Esta fase ensina o caminho completo dos dados.
 
 Depois que esse caminho fica claro, vale organizar melhor o codigo.
-

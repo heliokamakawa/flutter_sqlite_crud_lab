@@ -8,17 +8,17 @@ class EstadoRepository implements IEstadoRepository {
   final EstadoDao _dao;
 
   @override
-  Future<List<Estado>> listarTodos() => _dao.findAll();
+  Future<List<Estado>> listarTodos() => _dao.buscarTodos();
 
   @override
-  Future<Estado?> buscarPorId(int id) => _dao.findById(id);
+  Future<Estado?> buscarPorId(int id) => _dao.buscarPorId(id);
 
   @override
-  Future<void> salvar(Estado estado) => _dao.insert(estado);
+  Future<void> salvar(Estado estado) => _dao.inserir(estado);
 
   @override
-  Future<void> atualizar(Estado estado) => _dao.update(estado);
+  Future<void> atualizar(Estado estado) => _dao.atualizar(estado);
 
   @override
-  Future<void> excluir(int id) => _dao.delete(id);
+  Future<void> excluir(int id) => _dao.excluir(id);
 }

@@ -3,22 +3,22 @@ import 'package:sqflite/sqflite.dart';
 import '../models/estado.dart';
 
 class EstadoDao {
-  EstadoDao(this._database);
+  EstadoDao(this._bancoDados);
 
-  final Database _database;
+  final Database _bancoDados;
 
   static const String _tabela = 'estado';
 
-  Future<List<Estado>> findAll() async {
-    final List<Map<String, dynamic>> resultado = await _database.rawQuery(
+  Future<List<Estado>> buscarTodos() async {
+    final List<Map<String, dynamic>> resultado = await _bancoDados.rawQuery(
       'SELECT id, nome, sigla FROM $_tabela ORDER BY nome',
     );
 
     return resultado.map(Estado.fromMap).toList();
   }
 
-  Future<Estado?> findById(int id) async {
-    final List<Map<String, dynamic>> resultado = await _database.rawQuery(
+  Future<Estado?> buscarPorId(int id) async {
+    final List<Map<String, dynamic>> resultado = await _bancoDados.rawQuery(
       'SELECT id, nome, sigla FROM $_tabela WHERE id = ?',
       [id],
     );
@@ -30,12 +30,12 @@ class EstadoDao {
     return Estado.fromMap(resultado.first);
   }
 
-  Future<void> insert(Estado estado) async {
-    await _database.insert(_tabela, estado.toMap());
+  Future<void> inserir(Estado estado) async {
+    await _bancoDados.insert(_tabela, estado.toMap());
   }
 
-  Future<void> update(Estado estado) async {
-    await _database.update(
+  Future<void> atualizar(Estado estado) async {
+    await _bancoDados.update(
       _tabela,
       estado.toMap(),
       where: 'id = ?',
@@ -43,11 +43,7 @@ class EstadoDao {
     );
   }
 
-  Future<void> delete(int id) async {
-    await _database.delete(
-      _tabela,
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+  Future<void> excluir(int id) async {
+    await _bancoDados.delete(_tabela, where: 'id = ?', whereArgs: [id]);
   }
 }

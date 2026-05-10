@@ -4,7 +4,7 @@ Primeira organizacao: conexao centralizada, dados com tipo, testes para guiar a 
 
 ## O que esta fase introduz
 
-- `Fase02Database` — singleton para reuso da conexao
+- `Conexao` — singleton para reuso da conexao
 - `DatabaseSql` — SQL inicial em arquivo separado
 - `Estado` e `Cidade` — Models com `fromMap` e `toMap`
 - Testes unitarios para Model e Database

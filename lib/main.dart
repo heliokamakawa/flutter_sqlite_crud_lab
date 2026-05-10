@@ -48,9 +48,11 @@ class MenuFasesPage extends StatelessWidget {
               subtitle: const Text('CRUD raiz com SQL direto na tela'),
               trailing: const Icon(Icons.chevron_right),
               onTap: () {
-                Navigator.of(
-                  context,
-                ).push(MaterialPageRoute(builder: (_) => const Fase01App()));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const Fase01ExecucaoIsolada(),
+                  ),
+                );
               },
             ),
           ),
@@ -58,12 +60,16 @@ class MenuFasesPage extends StatelessWidget {
             child: ListTile(
               leading: const CircleAvatar(child: Text('02')),
               title: const Text('Fase 02'),
-              subtitle: const Text('Conexao singleton e Model com toMap/fromMap'),
+              subtitle: const Text(
+                'Conexao singleton e Model com toMap/fromMap',
+              ),
               trailing: const Icon(Icons.chevron_right),
               onTap: () {
-                Navigator.of(
-                  context,
-                ).push(MaterialPageRoute(builder: (_) => const Fase02App()));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const Fase02ExecucaoIsolada(),
+                  ),
+                );
               },
             ),
           ),
@@ -84,7 +90,9 @@ class MenuFasesPage extends StatelessWidget {
             child: ListTile(
               leading: const CircleAvatar(child: Text('04')),
               title: const Text('Fase 04'),
-              subtitle: const Text('Associacao com DAO, JOIN e DropdownButton<Estado>'),
+              subtitle: const Text(
+                'Associacao com DAO, JOIN e DropdownButton<Estado>',
+              ),
               trailing: const Icon(Icons.chevron_right),
               onTap: () {
                 Navigator.of(
@@ -102,9 +110,11 @@ class MenuFasesPage extends StatelessWidget {
               ),
               trailing: const Icon(Icons.chevron_right),
               onTap: () {
-                Navigator.of(
-                  context,
-                ).push(MaterialPageRoute(builder: (_) => const Fase05App()));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const Fase05ExecucaoIsolada(),
+                  ),
+                );
               },
             ),
           ),

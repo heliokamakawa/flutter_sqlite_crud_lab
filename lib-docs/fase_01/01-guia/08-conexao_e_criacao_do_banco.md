@@ -2,27 +2,31 @@
 
 ## Arquivos estudados
 
-A funcao `abrirConexaoBanco` aparece repetida em:
+A conexao fica centralizada em:
 
 ```text
-estado_lista.dart
-estado_form.dart
-cidade_lista.dart
-cidade_form.dart
+lib/fases/fase_01/database/conexao.dart
 ```
 
-Essa repeticao e proposital nesta fase.
+As telas ainda executam SQL diretamente, mas a abertura e criacao do banco ficam em uma classe propria.
 
-## Funcao de abertura
+## Classe de conexao
 
 ```dart
-Future<Database> abrirConexaoBanco() async {
-  if (kIsWeb) {
-    databaseFactory = databaseFactoryFfiWeb;
-  }
+class Conexao {
+  Conexao._();
+
+  static final Conexao instancia = Conexao._();
+
+  Database? _bancoDados;
+
+  Future<Database> get bancoDados async { ... }
+  Future<void> fechar() async { ... }
+  Future<Database> _abrir() async { ... }
+}
 ```
 
-A funcao retorna um `Future<Database>` porque abrir um banco e uma operacao assincrona.
+A propriedade `bancoDados` retorna um `Future<Database>` porque abrir um banco e uma operacao assincrona.
 
 No navegador, o projeto usa `sqflite_common_ffi_web`.
 
@@ -111,7 +115,7 @@ Isso facilita testar a listagem logo na primeira execucao.
 
 ## Ideia principal
 
-Nesta fase, cada tela sabe abrir o banco e sabe como criar as tabelas.
+Nesta fase, cada tela ainda sabe quais SQLs executar.
 
-Isso ajuda a enxergar o funcionamento, mas gera repeticao.
+Isso ajuda a enxergar o funcionamento do CRUD raiz, mas a conexao ja fica padronizada em `Conexao`.
 

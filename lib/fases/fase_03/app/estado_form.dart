@@ -39,10 +39,10 @@ class _EstadoFormPageState extends State<EstadoFormPage> {
       return;
     }
 
-    final Database banco = await Fase03Database.instance.database;
+    final Database banco = await Conexao.instancia.bancoDados;
     final EstadoDao dao = EstadoDao(banco);
 
-    await dao.insert(estado);
+    await dao.inserir(estado);
 
     if (!mounted) {
       return;
@@ -58,10 +58,10 @@ class _EstadoFormPageState extends State<EstadoFormPage> {
       return;
     }
 
-    final Database banco = await Fase03Database.instance.database;
+    final Database banco = await Conexao.instancia.bancoDados;
     final EstadoDao dao = EstadoDao(banco);
 
-    await dao.update(estado);
+    await dao.atualizar(estado);
 
     if (!mounted) {
       return;

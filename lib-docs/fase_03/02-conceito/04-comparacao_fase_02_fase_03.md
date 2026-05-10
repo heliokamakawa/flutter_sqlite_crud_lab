@@ -14,7 +14,7 @@ final List<Estado> estados = resultado.map(Estado.fromMap).toList();
 Fase 03 — a tela chama um metodo:
 
 ```dart
-final List<Estado> estados = await dao.findAll();
+final List<Estado> estados = await dao.buscarTodos();
 ```
 
 Resultado:
@@ -34,7 +34,7 @@ await banco.insert('estado', estado.toMap());
 Fase 03:
 
 ```dart
-await dao.insert(estado);
+await dao.inserir(estado);
 ```
 
 Resultado:
@@ -58,7 +58,7 @@ await banco.update(
 Fase 03:
 
 ```dart
-await dao.update(estado);
+await dao.atualizar(estado);
 ```
 
 Resultado:
@@ -76,7 +76,7 @@ await banco.delete('estado', where: 'id = ?', whereArgs: [id]);
 Fase 03:
 
 ```dart
-await dao.delete(id);
+await dao.excluir(id);
 ```
 
 ## Responsabilidades por camada
@@ -98,7 +98,7 @@ DAO: todo o SQL de CRUD de uma entidade
 ## O que nao mudou
 
 - o `Model` com `fromMap`, `toMap` e validacoes;
-- o `Database` com a conexao singleton;
+- o `bancoDados` com a conexao singleton;
 - a estrutura das telas (lista + formulario).
 
 A tela ficou mais curta. Ela perdeu o SQL. Ganhou clareza.

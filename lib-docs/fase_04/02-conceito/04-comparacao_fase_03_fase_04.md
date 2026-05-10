@@ -25,27 +25,18 @@ Fase 04:
 
 ```dart
 // Leitura com JOIN — retorna DTO
-Future<List<CidadeComEstadoDto>> findAll() async { ... }
-Future<List<CidadeComEstadoDto>> findByEstado(int estadoId) async { ... }
+Future<List<CidadeComEstadoDto>> buscarTodos() async { ... }
+Future<List<CidadeComEstadoDto>> buscarPorEstado(int estadoId) async { ... }
 
 // Leitura simples — retorna Model (para formulario de edicao)
-Future<Cidade?> findById(int id) async { ... }
+Future<Cidade?> buscarPorId(int id) async { ... }
 ```
 
 O DAO distingue claramente: consultas de exibicao retornam DTO, operacoes de escrita usam Model.
 
 ## Model Cidade
 
-Fase 02 (com campos opcionais do JOIN):
-
-```dart
-class Cidade {
-  final String? estadoNome;  // nullable
-  final String? estadoSigla; // nullable
-}
-```
-
-Fase 04 (Model limpo):
+Fase 02 e Fase 04 (Model limpo):
 
 ```dart
 class Cidade {
@@ -56,14 +47,20 @@ class Cidade {
 }
 ```
 
+O que a Fase 04 adiciona:
+
+```dart
+class CidadeComEstadoDto { ... }
+```
+
 Os dados do JOIN ficam em `CidadeComEstadoDto`.
 
 ## DTO
 
-Fase 02 (`CidadeDto` com campos opcionais):
+Alternativa ruim (campos opcionais misturados no model):
 
 ```dart
-class CidadeDto {
+class Cidade {
   final String? estadoNome;  // pode nao existir
   final String? estadoSigla; // pode nao existir
 }
@@ -114,8 +111,8 @@ Fase 04:
 final Estado? filtro = estadoFiltro;
 
 final List<CidadeComEstadoDto> encontradas = filtro == null
-    ? await dao.findAll()
-    : await dao.findByEstado(filtro.id!);
+    ? await dao.buscarTodos()
+    : await dao.buscarPorEstado(filtro.id!);
 ```
 
 A tela decide qual metodo do DAO chamar com base no estado do filtro.

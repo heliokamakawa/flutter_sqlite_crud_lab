@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../core/database_helper.dart';
+import '../core/conexao.dart';
 import '../dao/cidade_dao.dart';
 import '../dao/estado_dao.dart';
 import '../repositories/cidade_repository.dart';
@@ -36,7 +36,7 @@ class Fase05HomePage extends StatelessWidget {
   // Composicao das dependencias feita aqui, perto da raiz.
   // As telas recebem interfaces — nao conhecem o SQLite diretamente.
   Future<_Dependencias> _criarDependencias() async {
-    final Database banco = await DatabaseHelper.instance.database;
+    final Database banco = await Conexao.instancia.bancoDados;
 
     final estadoDao = EstadoDao(banco);
     final cidadeDao = CidadeDao(banco);
@@ -83,7 +83,8 @@ class Fase05HomePage extends StatelessWidget {
                 if (!context.mounted) return;
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) => EstadoListaPage(service: deps.estadoService),
+                    builder: (_) =>
+                        EstadoListaPage(service: deps.estadoService),
                   ),
                 );
               },

@@ -14,7 +14,7 @@ class EstadoListaPage extends StatefulWidget {
 class _EstadoListaPageState extends State<EstadoListaPage> {
   Future<void> deletarEstado(int id) async {
     // SQL direto na tela
-    final banco = await DatabaseHelper.instance.database;
+    final banco = await Conexao.instancia.bancoDados;
     final cidades = await banco.rawQuery(
       'SELECT COUNT(*) as total FROM cidade WHERE estado_id = ?', [id],
     );
@@ -73,7 +73,7 @@ Com camadas, cada responsabilidade fica em seu lugar.
                │ usa
 ┌──────────────▼──────────────────────────────────────┐
 │                   DATABASE                          │
-│  DatabaseHelper                                     │
+│  Conexao                                     │
 │  Responsabilidade: abrir e fornecer a conexao       │
 │  Conhece: sqflite                                   │
 └─────────────────────────────────────────────────────┘
@@ -92,7 +92,7 @@ Database    → sqflite, path
 ```
 
 A Tela nao conhece `EstadoDao`.
-O Service nao conhece `DatabaseHelper`.
+O Service nao conhece `Conexao`.
 O DAO nao conhece as regras de negocio.
 
 ## Fluxo de uma operacao: excluir estado
@@ -117,7 +117,7 @@ Service verifica:
   estadoRepository.excluir(id)  →  EstadoRepository.excluir(id)
                                           │
                                           ▼
-                                   EstadoDao.delete(id)
+                                   EstadoDao.excluir(id)
                                           │
                                           ▼
                                    DELETE FROM estado
@@ -136,7 +136,7 @@ Tela chama:
 EstadoRepository.listarTodos()
         │
         ▼
-EstadoDao.findAll()
+EstadoDao.buscarTodos()
         │
         ▼
 SELECT * FROM estado ORDER BY nome
@@ -156,7 +156,7 @@ List<Estado> → Tela exibe
 ```text
 lib/fases/fase_05/
 ├── core/
-│   └── database_helper.dart     ← DatabaseHelper singleton
+│   └── conexao.dart     ← Conexao singleton
 ├── models/
 │   ├── estado.dart              ← entidade + fromMap/toMap
 │   └── cidade.dart
@@ -189,7 +189,7 @@ Em `main_fase_05.dart`:
 ```dart
 class Fase05HomePage extends StatelessWidget {
   Future<void> _abrirEstados(BuildContext context) async {
-    final banco = await DatabaseHelper.instance.database;
+    final banco = await Conexao.instancia.bancoDados;
 
     // Camada DAO
     final estadoDao = EstadoDao(banco);

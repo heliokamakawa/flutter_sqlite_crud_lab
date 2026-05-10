@@ -37,13 +37,13 @@ class _EstadoFormPageState extends State<EstadoFormPage> {
 
     if (estado == null) return;
 
-    final Database banco = await Fase04Database.instance.database;
+    final Database banco = await Conexao.instancia.bancoDados;
     final EstadoDao dao = EstadoDao(banco);
 
     if (editando) {
-      await dao.update(estado);
+      await dao.atualizar(estado);
     } else {
-      await dao.insert(estado);
+      await dao.inserir(estado);
     }
 
     if (!mounted) return;
@@ -69,9 +69,7 @@ class _EstadoFormPageState extends State<EstadoFormPage> {
   }
 
   void _mostrarMensagem(String texto) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(texto)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(texto)));
   }
 
   @override

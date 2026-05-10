@@ -22,9 +22,9 @@ Observe:
 Arquivo: `lib/fases/fase_04/dao/cidade_dao.dart`
 
 Observe como os metodos se dividem:
-- `findAll()` retorna `List<CidadeComEstadoDto>` — JOIN para exibicao
-- `findByEstado(int estadoId)` retorna `List<CidadeComEstadoDto>` — JOIN filtrado
-- `findById(int id)` retorna `Cidade?` — Model puro para editar
+- `buscarTodos()` retorna `List<CidadeComEstadoDto>` — JOIN para exibicao
+- `buscarPorEstado(int estadoId)` retorna `List<CidadeComEstadoDto>` — JOIN filtrado
+- `buscarPorId(int id)` retorna `Cidade?` — Model puro para editar
 - `insert` e `update` recebem `Cidade` — Model para escrita
 
 ### 3. Model Estado com ==

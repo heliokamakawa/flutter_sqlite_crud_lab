@@ -4,7 +4,7 @@ O SQL sai das telas. O DAO concentra o acesso ao banco para a entidade Estado.
 
 ## O que esta fase introduz
 
-- `EstadoDao` — classe com `findAll`, `findById`, `insert`, `update`, `delete`
+- `EstadoDao` — classe com `buscarTodos`, `buscarPorId`, `insert`, `update`, `delete`
 - Tela chama metodos em vez de escrever SQL
 
 ## Como estudar

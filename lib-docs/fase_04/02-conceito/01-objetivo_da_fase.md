@@ -44,7 +44,7 @@ Essa e a decisao de mapeamento: identificar que o resultado de uma consulta com 
 
 A listagem de cidades permite filtrar por estado.
 
-O DAO tem dois metodos: `findAll()` e `findByEstado(int estadoId)`.
+O DAO tem dois metodos: `buscarTodos()` e `buscarPorEstado(int estadoId)`.
 
 A tela escolhe qual chamar com base no filtro selecionado.
 

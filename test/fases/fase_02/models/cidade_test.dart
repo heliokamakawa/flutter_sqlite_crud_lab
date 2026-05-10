@@ -33,33 +33,16 @@ void main() {
   });
 
   group('Cidade.fromMap', () {
-    test('cria cidade a partir do mapa retornado por consulta com JOIN', () {
+    test('cria cidade a partir do mapa da tabela cidade', () {
       final Cidade cidade = Cidade.fromMap({
         'id': 1,
         'nome': 'Sao Paulo',
         'estado_id': 10,
-        'estado_nome': 'Sao Paulo',
-        'estado_sigla': 'SP',
       });
 
       expect(cidade.id, 1);
       expect(cidade.nome, 'Sao Paulo');
       expect(cidade.estadoId, 10);
-      expect(cidade.estadoNome, 'Sao Paulo');
-      expect(cidade.estadoSigla, 'SP');
-    });
-
-    test('campos de estado ficam nulos quando consulta nao usa JOIN', () {
-      final Cidade cidade = Cidade.fromMap({
-        'id': 1,
-        'nome': 'Sao Paulo',
-        'estado_id': 10,
-        'estado_nome': null,
-        'estado_sigla': null,
-      });
-
-      expect(cidade.estadoNome, isNull);
-      expect(cidade.estadoSigla, isNull);
     });
   });
 
@@ -78,26 +61,6 @@ void main() {
         'nome': 'Belo Horizonte',
         'estado_id': 3,
       });
-    });
-  });
-
-  group('Cidade.estadoDescricao', () {
-    test('retorna a sigla quando disponivel', () {
-      final Cidade cidade = Cidade.fromMap({
-        'id': 1,
-        'nome': 'Sao Paulo',
-        'estado_id': 10,
-        'estado_nome': 'Sao Paulo',
-        'estado_sigla': 'SP',
-      });
-
-      expect(cidade.estadoDescricao, 'SP');
-    });
-
-    test('retorna nao encontrado quando sigla for nula', () {
-      final Cidade cidade = Cidade(id: 1, nome: 'Cidade sem estado', estadoId: 99);
-
-      expect(cidade.estadoDescricao, 'nao encontrado');
     });
   });
 }

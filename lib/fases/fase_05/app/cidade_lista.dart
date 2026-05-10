@@ -33,7 +33,8 @@ class _CidadeListaPageState extends State<CidadeListaPage> {
   }
 
   Future<void> _carregarEstados() async {
-    final List<Estado> encontrados = await widget.estadoRepository.listarTodos();
+    final List<Estado> encontrados = await widget.estadoRepository
+        .listarTodos();
     if (!mounted) return;
     setState(() {
       estados = encontrados;

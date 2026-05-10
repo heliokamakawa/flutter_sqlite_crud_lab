@@ -49,10 +49,8 @@ class _EstadoListaPageState extends State<EstadoListaPage> {
   Future<void> _abrirFormulario({Estado? estado}) async {
     final bool? salvou = await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => EstadoFormPage(
-          estado: estado,
-          repository: widget.service,
-        ),
+        builder: (_) =>
+            EstadoFormPage(estado: estado, repository: widget.service),
       ),
     );
 

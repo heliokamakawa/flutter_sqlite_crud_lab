@@ -22,14 +22,15 @@ class _EstadoListaPageState extends State<EstadoListaPage> {
   }
 
   Future<void> listarEstados() async {
-    final Database banco = await Fase02Database.instance.database;
+    final Database banco = await Conexao.instancia.bancoDados;
 
     final List<Map<String, dynamic>> resultado = await banco.rawQuery(
       'SELECT id, nome, sigla FROM estado ORDER BY nome',
     );
 
-    final List<Estado> estadosEncontrados =
-        resultado.map(Estado.fromMap).toList();
+    final List<Estado> estadosEncontrados = resultado
+        .map(Estado.fromMap)
+        .toList();
 
     if (!mounted) {
       return;
@@ -41,7 +42,7 @@ class _EstadoListaPageState extends State<EstadoListaPage> {
   }
 
   Future<void> excluirEstado(int id) async {
-    final Database banco = await Fase02Database.instance.database;
+    final Database banco = await Conexao.instancia.bancoDados;
 
     await banco.delete('cidade', where: 'estado_id = ?', whereArgs: [id]);
     await banco.delete('estado', where: 'id = ?', whereArgs: [id]);

@@ -23,7 +23,7 @@ class EstadoListaPage extends StatefulWidget {
 class _EstadoListaPageState extends State<EstadoListaPage> {
   Future<void> listarEstados() async {
     // A tela cria tudo o que precisa
-    final banco = await DatabaseHelper.instance.database;
+    final banco = await Conexao.instancia.bancoDados;
     final dao = EstadoDao(banco);
     final repo = EstadoRepository(dao);
     final estados = await repo.listarTodos();
@@ -32,7 +32,7 @@ class _EstadoListaPageState extends State<EstadoListaPage> {
 }
 ```
 
-Problema: a tela conhece `DatabaseHelper`, `EstadoDao` e `EstadoRepository`.
+Problema: a tela conhece `Conexao`, `EstadoDao` e `EstadoRepository`.
 
 Para testar a tela, voce precisa de um banco de dados real.
 
@@ -69,7 +69,7 @@ As dependencias sao criadas na raiz da aplicacao, perto do ponto de entrada:
 ```dart
 class Fase05HomePage extends StatelessWidget {
   Future<void> _abrirEstados(BuildContext context) async {
-    final banco = await DatabaseHelper.instance.database;
+    final banco = await Conexao.instancia.bancoDados;
     final dao = EstadoDao(banco);
     final repo = EstadoRepository(dao);
     final service = EstadoService(estadoRepository: repo, cidadeRepository: ...);

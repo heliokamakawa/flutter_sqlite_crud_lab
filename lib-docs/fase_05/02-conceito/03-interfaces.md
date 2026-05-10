@@ -32,7 +32,7 @@ Imagine uma tela que cria seu proprio repositorio:
 class EstadoListaPage extends StatefulWidget {
   // Dentro do State:
   Future<void> listarEstados() async {
-    final Database banco = await DatabaseHelper.instance.database;
+    final Database banco = await Conexao.instancia.bancoDados;
     final EstadoDao dao = EstadoDao(banco);
     final EstadoRepository repo = EstadoRepository(dao);
     final estados = await repo.listarTodos();
@@ -41,7 +41,7 @@ class EstadoListaPage extends StatefulWidget {
 }
 ```
 
-A tela conhece: `DatabaseHelper`, `EstadoDao`, `EstadoRepository`.
+A tela conhece: `Conexao`, `EstadoDao`, `EstadoRepository`.
 
 Para testar a tela, voce precisa de um banco de dados real.
 
@@ -75,7 +75,7 @@ class EstadoRepository implements IEstadoRepository {
   final EstadoDao _dao;
 
   @override
-  Future<List<Estado>> listarTodos() => _dao.findAll();
+  Future<List<Estado>> listarTodos() => _dao.buscarTodos();
 }
 
 // Implementacao para testes — dados em memoria, sem banco
