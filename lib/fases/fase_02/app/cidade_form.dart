@@ -18,7 +18,7 @@ class _CidadeFormPageState extends State<CidadeFormPage> {
   final TextEditingController nomeController = TextEditingController();
 
   List<Estado> estados = [];
-  int? estadoIdSelecionado;
+  Estado? estadoSelecionado;
 
   bool get editando => widget.cidade != null;
 
@@ -52,8 +52,11 @@ class _CidadeFormPageState extends State<CidadeFormPage> {
 
     setState(() {
       estados = estadosEncontrados;
-      if (widget.cidade != null) {
-        estadoIdSelecionado = widget.cidade!.estadoId;
+      final int? estadoId = widget.cidade?.estadoId;
+      if (estadoId != null) {
+        estadoSelecionado = estados
+            .where((estado) => estado.id == estadoId)
+            .firstOrNull;
       }
     });
   }
@@ -101,15 +104,15 @@ class _CidadeFormPageState extends State<CidadeFormPage> {
 
   Cidade? criarCidadeDoFormulario({int? id}) {
     final String nome = nomeController.text.trim();
-    final int? estadoId = estadoIdSelecionado;
+    final Estado? estado = estadoSelecionado;
 
-    if (nome.isEmpty || estadoId == null) {
+    if (nome.isEmpty || estado == null) {
       mostrarMensagem('Informe o nome e escolha o estado.');
       return null;
     }
 
     try {
-      return Cidade(id: id, nome: nome, estadoId: estadoId);
+      return Cidade(id: id, nome: nome, estadoId: estado.id!);
     } on ArgumentError catch (erro) {
       mostrarMensagem(erro.message as String);
       return null;
@@ -143,24 +146,29 @@ class _CidadeFormPageState extends State<CidadeFormPage> {
             ),
           ),
           const SizedBox(height: 8),
-          DropdownButtonFormField<int>(
-            initialValue: estadoIdSelecionado,
+          InputDecorator(
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Estado',
             ),
-            items: [
-              for (final Estado estado in estados)
-                DropdownMenuItem<int>(
-                  value: estado.id,
-                  child: Text(estado.descricao),
-                ),
-            ],
-            onChanged: (int? valor) {
-              setState(() {
-                estadoIdSelecionado = valor;
-              });
-            },
+            child: DropdownButton<Estado>(
+              value: estadoSelecionado,
+              isExpanded: true,
+              underline: const SizedBox.shrink(),
+              hint: const Text('Selecione o estado'),
+              items: [
+                for (final Estado estado in estados)
+                  DropdownMenuItem<Estado>(
+                    value: estado,
+                    child: Text(estado.descricao),
+                  ),
+              ],
+              onChanged: (Estado? valor) {
+                setState(() {
+                  estadoSelecionado = valor;
+                });
+              },
+            ),
           ),
           const SizedBox(height: 8),
           FilledButton(

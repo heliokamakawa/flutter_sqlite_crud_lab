@@ -110,4 +110,3 @@ Alterar segue este fluxo:
 ```text
 lista envia registro -> formulario preenche campos -> usuario muda dados -> UPDATE por id -> pop(true) -> lista recarrega
 ```
-

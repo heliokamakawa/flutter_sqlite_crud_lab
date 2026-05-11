@@ -38,17 +38,14 @@ void main() {
         await banco.execute(comando);
       }
 
-      final List<Map<String, Object?>> cidades = await banco.rawQuery('''
-        SELECT cidade.nome, estado.sigla
-        FROM cidade
-        INNER JOIN estado ON estado.id = cidade.estado_id
-        ORDER BY cidade.nome
-      ''');
+      final List<Map<String, Object?>> cidades = await banco.rawQuery(
+        'SELECT nome, estado_id FROM cidade ORDER BY nome',
+      );
 
       expect(cidades, [
-        {'nome': 'Belo Horizonte', 'sigla': 'MG'},
-        {'nome': 'Rio de Janeiro', 'sigla': 'RJ'},
-        {'nome': 'Sao Paulo', 'sigla': 'SP'},
+        {'nome': 'Belo Horizonte', 'estado_id': 3},
+        {'nome': 'Rio de Janeiro', 'estado_id': 2},
+        {'nome': 'Sao Paulo', 'estado_id': 1},
       ]);
     });
   });

@@ -27,7 +27,7 @@ Quando muitos arquivos conhecem esses detalhes, qualquer mudanca pequena pode ex
 
 ## Evolucao da Fase 02
 
-A Fase 02 ainda nao pula direto para DAO ou Repository.
+A Fase 02 ainda nao pula direto para DAO.
 
 Ela introduz uma evolucao por vez:
 

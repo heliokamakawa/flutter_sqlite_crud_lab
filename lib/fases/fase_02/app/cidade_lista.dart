@@ -24,17 +24,10 @@ class _CidadeListaPageState extends State<CidadeListaPage> {
   Future<void> listarCidades() async {
     final Database banco = await Conexao.instancia.bancoDados;
 
-    final List<Map<String, dynamic>> resultado = await banco.rawQuery('''
-      SELECT
-        cidade.id,
-        cidade.nome,
-        cidade.estado_id,
-        estado.nome AS estado_nome,
-        estado.sigla AS estado_sigla
-      FROM cidade
-      LEFT JOIN estado ON estado.id = cidade.estado_id
-      ORDER BY cidade.nome
-    ''');
+    final List<Map<String, dynamic>> resultado = await banco.query(
+      'cidade',
+      orderBy: 'nome',
+    );
 
     final List<Cidade> cidadesEncontradas = resultado
         .map(Cidade.fromMap)

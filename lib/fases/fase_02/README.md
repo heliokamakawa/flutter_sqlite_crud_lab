@@ -40,7 +40,7 @@ Nesta fase:
 Os models representam entidades e validam dados principais.
 
 Nesta fase, `Cidade` representa somente a tabela `cidade`: `id`, `nome` e `estadoId`.
-Dados de estado vindos de JOIN ficam para a Fase 04, quando entra `CidadeComEstadoDto`.
+Dados de estado continuam no Model `Estado`. A cidade guarda apenas o `estadoId`.
 
 ## Singleton nesta fase
 
@@ -65,5 +65,4 @@ O DAO fica como proxima evolucao natural.
 - Flutter - Persist data with SQLite: https://docs.flutter.dev/cookbook/persistence/sqlite
 - Dart - Classes: https://dart.dev/language/classes
 - Dart - Constructors: https://dart.dev/language/constructors
-- Martin Fowler - Data Transfer Object: https://martinfowler.com/eaaCatalog/dataTransferObject.html
 - Refactoring Guru - Singleton: https://refactoring.guru/pt-br/design-patterns/singleton

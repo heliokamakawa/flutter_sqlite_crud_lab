@@ -43,9 +43,7 @@ class Fase04HomePage extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         children: [
           const Text(
-            'Banco relacional exige decisao de mapeamento. '
-            'Cidades tem estado. A listagem usa JOIN. '
-            'O formulario trabalha com o objeto Estado, nao apenas com o id.',
+            'Nesta fase o SQL sai da tela. Estados e cidades usam DAO.',
           ),
           const SizedBox(height: 16),
           Card(
@@ -65,9 +63,7 @@ class Fase04HomePage extends StatelessWidget {
             child: ListTile(
               leading: const Icon(Icons.location_city),
               title: const Text('Cidades'),
-              subtitle: const Text(
-                'Listagem com JOIN, filtro por estado, DropdownButton<Estado>',
-              ),
+              subtitle: const Text('CRUD usando CidadeDao'),
               trailing: const Icon(Icons.chevron_right),
               onTap: () {
                 Navigator.of(context).push(

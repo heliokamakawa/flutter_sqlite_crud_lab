@@ -1,6 +1,5 @@
 import 'package:sqflite/sqflite.dart';
 
-import '../dtos/cidade_com_estado_dto.dart';
 import '../models/cidade.dart';
 
 class CidadeDao {
@@ -10,38 +9,31 @@ class CidadeDao {
 
   static const String _tabela = 'cidade';
 
-  static const String _selectComEstado = '''
-    SELECT
-      cidade.id,
-      cidade.nome,
-      cidade.estado_id,
-      estado.nome  AS estado_nome,
-      estado.sigla AS estado_sigla
-    FROM cidade
-    INNER JOIN estado ON estado.id = cidade.estado_id
-  ''';
-
-  Future<List<CidadeComEstadoDto>> buscarTodos() async {
-    final List<Map<String, dynamic>> resultado = await _bancoDados.rawQuery(
-      '$_selectComEstado ORDER BY cidade.nome',
+  Future<List<Cidade>> buscarTodos() async {
+    final List<Map<String, dynamic>> resultado = await _bancoDados.query(
+      _tabela,
+      orderBy: 'nome',
     );
 
-    return resultado.map(CidadeComEstadoDto.fromMap).toList();
+    return resultado.map(Cidade.fromMap).toList();
   }
 
-  Future<List<CidadeComEstadoDto>> buscarPorEstado(int estadoId) async {
-    final List<Map<String, dynamic>> resultado = await _bancoDados.rawQuery(
-      '$_selectComEstado WHERE cidade.estado_id = ? ORDER BY cidade.nome',
-      [estadoId],
+  Future<List<Cidade>> buscarPorEstado(int estadoId) async {
+    final List<Map<String, dynamic>> resultado = await _bancoDados.query(
+      _tabela,
+      where: 'estado_id = ?',
+      whereArgs: [estadoId],
+      orderBy: 'nome',
     );
 
-    return resultado.map(CidadeComEstadoDto.fromMap).toList();
+    return resultado.map(Cidade.fromMap).toList();
   }
 
   Future<Cidade?> buscarPorId(int id) async {
-    final List<Map<String, dynamic>> resultado = await _bancoDados.rawQuery(
-      'SELECT id, nome, estado_id FROM $_tabela WHERE id = ?',
-      [id],
+    final List<Map<String, dynamic>> resultado = await _bancoDados.query(
+      _tabela,
+      where: 'id = ?',
+      whereArgs: [id],
     );
 
     if (resultado.isEmpty) {
@@ -66,5 +58,13 @@ class CidadeDao {
 
   Future<void> excluir(int id) async {
     await _bancoDados.delete(_tabela, where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<void> excluirPorEstado(int estadoId) async {
+    await _bancoDados.delete(
+      _tabela,
+      where: 'estado_id = ?',
+      whereArgs: [estadoId],
+    );
   }
 }

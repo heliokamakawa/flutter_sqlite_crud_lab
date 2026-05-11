@@ -1,49 +1,41 @@
-# Fase 04 - Passo a Passo
+# Fase 04 - Passo a passo
 
-## O que esta fase adiciona
+## Model Cidade
 
-- `CidadeComEstadoDto` — resultado de JOIN com campos obrigatorios
-- `CidadeDao` com consultas simples e consultas com JOIN
-- `DropdownButton<Estado>` com `==` e `hashCode` no Model
+`Cidade` representa a tabela `cidade`:
 
-## O que abrir
+```text
+id, nome, estadoId
+```
 
-### 1. DTO de Cidade
+## DAO de Cidade
 
-Arquivo: `lib/fases/fase_04/dtos/cidade_com_estado_dto.dart`
+`CidadeDao` possui:
 
-Observe:
-- todos os campos sao obrigatorios (sem `?`)
-- `estadoNome` e `estadoSigla` sempre existem — o JOIN garante
-- compare com o Model `Cidade`: DTO tem campos extras, todos nao-nulos
+```text
+buscarTodos()
+buscarPorEstado(estadoId)
+buscarPorId(id)
+inserir(cidade)
+atualizar(cidade)
+excluir(id)
+excluirPorEstado(estadoId)
+```
 
-### 2. DAO de Cidade
+Ele tambem faz o mapeamento objeto-relacional:
 
-Arquivo: `lib/fases/fase_04/dao/cidade_dao.dart`
+```text
+Map do SQLite -> Cidade
+Cidade -> Map para insert/update
+```
 
-Observe como os metodos se dividem:
-- `buscarTodos()` retorna `List<CidadeComEstadoDto>` — JOIN para exibicao
-- `buscarPorEstado(int estadoId)` retorna `List<CidadeComEstadoDto>` — JOIN filtrado
-- `buscarPorId(int id)` retorna `Cidade?` — Model puro para editar
-- `insert` e `update` recebem `Cidade` — Model para escrita
+## Tela
 
-### 3. Model Estado com ==
+A tela:
 
-Arquivo: `lib/fases/fase_04/models/estado.dart`
+- carrega estados para o filtro;
+- chama `CidadeDao`;
+- abre o formulario;
+- atualiza a lista depois de salvar ou excluir.
 
-Observe:
-- `operator ==` compara pelo `id`
-- `hashCode` usa `id.hashCode`
-- sem isso o `DropdownButton<Estado>` nao consegue pre-selecionar ao editar
-
-### 4. Formulario de Cidade
-
-Arquivo: `lib/fases/fase_04/app/cidade_form.dart`
-
-Compare com fase_03 (se houver formulario de cidade):
-- Antes: `int? estadoIdSelecionado` e `DropdownButton<int>`
-- Agora: `Estado? estadoSelecionado` e `DropdownButton<Estado>`
-
-Observe:
-- o `value` do dropdown e um objeto `Estado` inteiro, nao um `int`
-- ao editar, o `==` customizado encontra o item correto na lista
+Ao excluir um estado, as cidades daquele estado sao excluidas antes.

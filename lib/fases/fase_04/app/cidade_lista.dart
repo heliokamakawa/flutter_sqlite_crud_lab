@@ -4,7 +4,7 @@ import 'package:sqflite/sqflite.dart';
 import '../dao/cidade_dao.dart';
 import '../dao/estado_dao.dart';
 import '../database/database.dart';
-import '../dtos/cidade_com_estado_dto.dart';
+import '../models/cidade.dart';
 import '../models/estado.dart';
 import 'cidade_form.dart';
 
@@ -16,7 +16,7 @@ class CidadeListaPage extends StatefulWidget {
 }
 
 class _CidadeListaPageState extends State<CidadeListaPage> {
-  List<CidadeComEstadoDto> cidades = [];
+  List<Cidade> cidades = [];
   List<Estado> estados = [];
   Estado? estadoFiltro;
 
@@ -44,7 +44,7 @@ class _CidadeListaPageState extends State<CidadeListaPage> {
 
     final Estado? filtro = estadoFiltro;
 
-    final List<CidadeComEstadoDto> encontradas = filtro == null
+    final List<Cidade> encontradas = filtro == null
         ? await dao.buscarTodos()
         : await dao.buscarPorEstado(filtro.id!);
 
@@ -61,16 +61,26 @@ class _CidadeListaPageState extends State<CidadeListaPage> {
     await _listarCidades();
   }
 
-  Future<void> _abrirFormulario({CidadeComEstadoDto? cidadeDto}) async {
+  Future<void> _abrirFormulario({Cidade? cidade}) async {
     final bool? salvou = await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => CidadeFormPage(cidade: cidadeDto?.toModel()),
+        builder: (_) => CidadeFormPage(cidade: cidade),
       ),
     );
 
     if (salvou == true) {
       await _listarCidades();
     }
+  }
+
+  String _descricaoEstado(int estadoId) {
+    for (final Estado estado in estados) {
+      if (estado.id == estadoId) {
+        return estado.descricao;
+      }
+    }
+
+    return 'Estado $estadoId';
   }
 
   @override
@@ -121,23 +131,23 @@ class _CidadeListaPageState extends State<CidadeListaPage> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 8),
-          for (final CidadeComEstadoDto cidade in cidades)
+          for (final Cidade cidade in cidades)
             Card(
               child: ListTile(
                 title: Text(cidade.nome),
-                subtitle: Text(cidade.estadoDescricao),
+                subtitle: Text(_descricaoEstado(cidade.estadoId)),
                 trailing: Wrap(
                   spacing: 4,
                   children: [
                     IconButton(
                       tooltip: 'Alterar',
                       icon: const Icon(Icons.edit),
-                      onPressed: () => _abrirFormulario(cidadeDto: cidade),
+                      onPressed: () => _abrirFormulario(cidade: cidade),
                     ),
                     IconButton(
                       tooltip: 'Excluir',
                       icon: const Icon(Icons.delete),
-                      onPressed: () => _excluirCidade(cidade.id),
+                      onPressed: () => _excluirCidade(cidade.id!),
                     ),
                   ],
                 ),

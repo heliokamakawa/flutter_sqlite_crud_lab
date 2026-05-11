@@ -116,6 +116,30 @@ String get descricao => '$nome ($sigla)';
 // resultado: 'Sao Paulo (SP)'
 ```
 
+No formulario de cidade, o dropdown mostra `estado.descricao` e retorna o objeto `Estado` selecionado:
+
+```dart
+DropdownButton<Estado>(
+  value: estadoSelecionado,
+  items: [
+    for (final Estado estado in estados)
+      DropdownMenuItem<Estado>(
+        value: estado,
+        child: Text(estado.descricao),
+      ),
+  ],
+  onChanged: (Estado? valor) {
+    estadoSelecionado = valor;
+  },
+)
+```
+
+Ao salvar a cidade, apenas o id do estado vai para o Model `Cidade`:
+
+```dart
+Cidade(nome: nome, estadoId: estadoSelecionado!.id!)
+```
+
 ## Cidade
 
 ```dart
@@ -151,7 +175,7 @@ nome
 estadoId
 ```
 
-Dados como `estadoNome` e `estadoSigla` pertencem ao resultado de uma consulta com JOIN. Esse tipo de resultado sera representado por um DTO especifico na Fase 04: `CidadeComEstadoDto`.
+O Model `Cidade` guarda apenas os campos da tabela `cidade`: `id`, `nome` e `estadoId`.
 
 ### toMap grava somente colunas da tabela cidade
 
@@ -198,6 +222,7 @@ estado['sigla']
 
 - a tela nao precisa trabalhar com `Map` o tempo todo;
 - `fromMap` e `toMap` ficam no model;
+- o dropdown pode retornar um objeto `Estado`, nao apenas um `int`;
 - `toMap` nao inclui campos que nao existem na tabela;
 - `incluirId` controla quando o id vai no mapa.
 

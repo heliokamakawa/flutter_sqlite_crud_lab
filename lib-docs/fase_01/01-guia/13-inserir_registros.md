@@ -111,4 +111,3 @@ Inserir segue sempre o mesmo fluxo:
 ```text
 ler campos -> validar -> abrir banco -> executar INSERT -> pop(true)
 ```
-

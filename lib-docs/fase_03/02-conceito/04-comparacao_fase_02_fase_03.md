@@ -41,6 +41,7 @@ Resultado:
 
 - a tela nao sabe o nome da tabela;
 - a tela nao sabe que `toMap` existe.
+- o mapeamento entre objeto e tabela fica no DAO.
 
 ## Update
 

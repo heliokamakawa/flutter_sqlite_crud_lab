@@ -65,14 +65,14 @@ Isso mantem o exemplo simples para que o foco fique na separacao de responsabili
 
 A tela ainda conhece o DAO diretamente.
 
-A injecao de dependencia e o repositorio ficam para fases futuras.
+As proximas fases continuam usando DAO, agora com mais entidades.
 
 Evolucao planejada:
 
 ```text
 Fase 02: tela chama banco diretamente, mas usa Models
 Fase 03: SQL sai da tela e vai para o DAO
-Fase 04: Repository abstrai o DAO (a tela nem ve o banco)
+Fase 04: outro DAO aparece para a entidade Cidade
 ```
 
 ## Resultado esperado
@@ -87,6 +87,5 @@ Ao final da Fase 03, o aluno deve conseguir explicar:
 ## Referencias para estudo
 
 - Oracle - Core J2EE Patterns - Data Access Object: https://www.oracle.com/java/technologies/dataaccessobject.html
-- Martin Fowler - Patterns of Enterprise Application Architecture: https://martinfowler.com/books/eaa.html
 - Flutter - Guide to app architecture: https://docs.flutter.dev/app-architecture/guide
 - Flutter - Persist data with SQLite: https://docs.flutter.dev/cookbook/persistence/sqlite

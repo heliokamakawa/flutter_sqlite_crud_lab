@@ -90,7 +90,7 @@ O objetivo e enxergar o fluxo bruto:
 4. executar SQL;
 5. receber os dados como `Map`.
 
-Ainda nao ha classe de conexao, DAO, Repository, Model ou DTO.
+Ainda nao ha classe de conexao, DAO ou Model.
 
 ## Referencias para estudo
 

@@ -1,38 +1,35 @@
 # Como estudar
 
-## 1. Comece pelo menu principal
+## 1. Execute o menu
 
-Execute o projeto pelo `lib/main.dart`.
-
-O menu apresenta as fases disponiveis. No momento, apenas a Fase 01 esta implementada.
-
-## 2. Leia a documentacao da fase
-
-Antes de mexer no codigo, leia:
-
-```text
-lib/fases/fase_01/README.md
+```bash
+flutter run
 ```
 
-Depois leia os arquivos em:
+Escolha uma fase por vez.
+
+## 2. Siga a ordem
 
 ```text
-lib/fases/fase_01/conceito/
+Fase 01 -> SQL direto na tela
+Fase 02 -> Conexao e Models
+Fase 03 -> EstadoDao
+Fase 04 -> CidadeDao
 ```
 
-## 3. Execute o CRUD
+## 3. Compare sempre
 
-Na Fase 01:
+Em cada fase, observe:
 
-1. cadastre estados;
-2. observe o `id` gerado;
-3. cadastre cidades usando o `estado_id`;
-4. edite registros;
-5. exclua registros;
-6. compare a tela com os comandos SQL no codigo.
+- onde o banco e aberto;
+- onde o SQL fica;
+- onde acontece o mapeamento objeto-relacional;
+- qual tipo de dado a tela recebe;
+- se o dropdown de cidade esta trabalhando com `Estado`;
+- o que ficou mais simples que na fase anterior.
 
-## 4. Observe as limitacoes
+## 4. Nao antecipe camadas
 
-Nao tente melhorar a arquitetura nesta fase.
+O objetivo do projeto e didatico.
 
-O objetivo e entender o funcionamento bruto antes de organizar melhor o codigo nas fases seguintes.
+Use apenas o que a fase pede.

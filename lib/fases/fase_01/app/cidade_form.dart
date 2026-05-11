@@ -126,24 +126,29 @@ class _CidadeFormPageState extends State<CidadeFormPage> {
             ),
           ),
           const SizedBox(height: 8),
-          DropdownButtonFormField<int>(
-            initialValue: estadoIdSelecionado,
+          InputDecorator(
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Estado',
             ),
-            items: [
-              for (final Map<String, dynamic> estado in estados)
-                DropdownMenuItem<int>(
-                  value: estado['id'] as int,
-                  child: Text('${estado['nome']} (${estado['sigla']})'),
-                ),
-            ],
-            onChanged: (int? valor) {
-              setState(() {
-                estadoIdSelecionado = valor;
-              });
-            },
+            child: DropdownButton<int>(
+              value: estadoIdSelecionado,
+              isExpanded: true,
+              underline: const SizedBox.shrink(),
+              hint: const Text('Selecione o estado'),
+              items: [
+                for (final Map<String, dynamic> estado in estados)
+                  DropdownMenuItem<int>(
+                    value: estado['id'] as int,
+                    child: Text('${estado['nome']} (${estado['sigla']})'),
+                  ),
+              ],
+              onChanged: (int? valor) {
+                setState(() {
+                  estadoIdSelecionado = valor;
+                });
+              },
+            ),
           ),
           const SizedBox(height: 8),
           FilledButton(

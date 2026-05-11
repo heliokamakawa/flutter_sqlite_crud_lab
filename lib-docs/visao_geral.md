@@ -14,7 +14,6 @@ lib/
     fase_02/
     fase_03/
     fase_04/
-    fase_05/
 
 lib-docs/
   visao_geral.md
@@ -27,8 +26,7 @@ lib-docs/
 - Fase 01: CRUD raiz com SQL direto na tela.
 - Fase 02: conexao singleton e Model.
 - Fase 03: DAO para entidade simples.
-- Fase 04: DAO com JOIN e DTO para resultado composto.
-- Fase 05: Repository, Service e injecao de dependencia.
+- Fase 04: DAO para estado e cidade.
 
 ## Referencias
 

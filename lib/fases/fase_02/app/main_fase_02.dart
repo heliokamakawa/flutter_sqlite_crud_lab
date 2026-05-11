@@ -54,7 +54,7 @@ class Fase02HomePage extends StatelessWidget {
             child: ListTile(
               leading: const Icon(Icons.location_city),
               title: const Text('Cidades'),
-              subtitle: const Text('Listagem com JOIN e formulario com Model'),
+              subtitle: const Text('CRUD usando Model Cidade'),
               trailing: const Icon(Icons.chevron_right),
               onTap: () {
                 Navigator.of(context).push(

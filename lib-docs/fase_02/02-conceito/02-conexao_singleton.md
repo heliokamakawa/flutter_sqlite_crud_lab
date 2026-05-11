@@ -88,7 +88,7 @@ As telas deixam de repetir a abertura do banco.
 
 Singleton e util aqui porque o app didatico usa uma unica conexao local.
 
-Isso nao significa que Singleton deve ser usado em qualquer situacao. Em arquiteturas maiores, muitas vezes a conexao ou o repositorio entra por injecao de dependencia para facilitar testes e troca de implementacao.
+Neste projeto, o Singleton deixa o acesso ao banco simples e repetivel para fins didaticos.
 
 Nesta fase, o Singleton e uma ponte simples entre:
 

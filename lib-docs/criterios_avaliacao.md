@@ -16,7 +16,7 @@
 - Implementa CRUD completo de cidade.
 - Usa SQL explicito.
 - Usa `Map<String, dynamic>` para ler os registros.
-- Nao usa DAO, Model, DTO, Repository, Singleton ou injecao de dependencia.
+- Nao usa DAO, Model ou Singleton.
 
 ## Documentacao
 

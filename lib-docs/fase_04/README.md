@@ -1,17 +1,14 @@
-# Fase 04 — DAO com associacao
+# Fase 04 - DAO para cidade
 
-Cidade pertence a Estado. O DAO lida com JOIN e retorna DTO.
+Esta fase adiciona CRUD de cidade usando DAO.
 
-## O que esta fase introduz
+## O que estudar
 
-- `CidadeComEstadoDto` — resultado de JOIN com campos obrigatorios
-- `CidadeDao` com consultas simples e consultas com JOIN
-- `DropdownButton<Estado>` usando o objeto completo
-- `==` e `hashCode` no Model para comparacao por valor
+- `EstadoDao` e `CidadeDao`
+- `Cidade` com `id`, `nome` e `estadoId`
+- `DropdownButton<Estado>` no formulario de cidade
+- filtro de cidades por estado
 
-## Como estudar
+O objetivo e manter SQL fora das telas.
 
-- `01-guia/` — passo a passo do codigo
-- `02-conceito/` — explicacoes e comparacao com a Fase 03
-
-Comece por `01-guia/00-roteiro_de_estudo.md`.
+O mapeamento objeto-relacional fica nos DAOs.

@@ -60,7 +60,7 @@ Exemplo:
 ```dart
 estado['nome']
 cidade['estado_id']
-cidade['estado_sigla']
+cidade['estado_id']
 ```
 
 O `Map<String, dynamic>` e simples para aprender.

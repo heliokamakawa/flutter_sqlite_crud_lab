@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../dao/cidade_dao.dart';
 import '../dao/estado_dao.dart';
 import '../database/database.dart';
 import '../models/estado.dart';
@@ -39,6 +40,7 @@ class _EstadoListaPageState extends State<EstadoListaPage> {
     final Database banco = await Conexao.instancia.bancoDados;
     final EstadoDao dao = EstadoDao(banco);
 
+    await CidadeDao(banco).excluirPorEstado(id);
     await dao.excluir(id);
     await listarEstados();
   }

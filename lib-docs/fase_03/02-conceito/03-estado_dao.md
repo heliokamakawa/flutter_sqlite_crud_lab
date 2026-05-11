@@ -42,7 +42,7 @@ Future<List<Estado>> buscarTodos() async {
 
 Retorna todos os estados ordenados por nome.
 
-O `rawQuery` retorna uma lista de mapas. O `Estado.fromMap` converte cada mapa em um objeto `Estado`.
+O `rawQuery` retorna uma lista de mapas. O DAO faz o mapeamento objeto-relacional chamando `Estado.fromMap` para converter cada mapa em um objeto `Estado`.
 
 ## buscarPorId
 
@@ -76,6 +76,8 @@ Future<void> inserir(Estado estado) async {
 ```
 
 Insere o estado no banco.
+
+No `insert`, o DAO faz o caminho inverso: chama `estado.toMap()` para converter o objeto em mapa.
 
 `estado.toMap()` sem `incluirId: true` nao inclui o `id` no mapa, porque o banco gera o id automaticamente via `AUTOINCREMENT`.
 
