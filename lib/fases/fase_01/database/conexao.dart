@@ -86,6 +86,66 @@ class Conexao {
           ['Belo Horizonte', 3],
         );
       },
+      onOpen: _garantirCargaInicial,
     );
+  }
+
+  Future<void> _garantirCargaInicial(Database db) async {
+    final int totalEstados =
+        Sqflite.firstIntValue(
+          await db.rawQuery('SELECT COUNT(*) FROM estado'),
+        ) ??
+        0;
+
+    if (totalEstados == 0) {
+      await db.rawInsert('INSERT INTO estado (nome, sigla) VALUES (?, ?)', [
+        'Sao Paulo',
+        'SP',
+      ]);
+      await db.rawInsert('INSERT INTO estado (nome, sigla) VALUES (?, ?)', [
+        'Rio de Janeiro',
+        'RJ',
+      ]);
+      await db.rawInsert('INSERT INTO estado (nome, sigla) VALUES (?, ?)', [
+        'Minas Gerais',
+        'MG',
+      ]);
+    }
+
+    final int totalCidades =
+        Sqflite.firstIntValue(
+          await db.rawQuery('SELECT COUNT(*) FROM cidade'),
+        ) ??
+        0;
+
+    if (totalCidades > 0) {
+      return;
+    }
+
+    final Map<String, int> estadosPorSigla = await _buscarEstadosPorSigla(db);
+
+    await db.rawInsert('INSERT INTO cidade (nome, estado_id) VALUES (?, ?)', [
+      'Sao Paulo',
+      estadosPorSigla['SP'],
+    ]);
+    await db.rawInsert('INSERT INTO cidade (nome, estado_id) VALUES (?, ?)', [
+      'Rio de Janeiro',
+      estadosPorSigla['RJ'],
+    ]);
+    await db.rawInsert('INSERT INTO cidade (nome, estado_id) VALUES (?, ?)', [
+      'Belo Horizonte',
+      estadosPorSigla['MG'],
+    ]);
+  }
+
+  Future<Map<String, int>> _buscarEstadosPorSigla(Database db) async {
+    final List<Map<String, dynamic>> estados = await db.rawQuery(
+      'SELECT id, sigla FROM estado',
+    );
+
+    return {
+      for (final Map<String, dynamic> estado in estados)
+        estado['sigla'] as String: estado['id'] as int,
+    };
   }
 }

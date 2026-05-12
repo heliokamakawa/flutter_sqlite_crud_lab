@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../dao/cidade_dao.dart';
-import '../dao/estado_dao.dart';
-import '../database/database.dart';
-import '../models/estado.dart';
+import '../core/database_helper.dart';
 import 'estado_form.dart';
 
 class EstadoListaPage extends StatefulWidget {
@@ -15,7 +12,7 @@ class EstadoListaPage extends StatefulWidget {
 }
 
 class _EstadoListaPageState extends State<EstadoListaPage> {
-  List<Estado> estados = [];
+  List<Map<String, dynamic>> estados = [];
 
   @override
   void initState() {
@@ -24,31 +21,28 @@ class _EstadoListaPageState extends State<EstadoListaPage> {
   }
 
   Future<void> listarEstados() async {
-    final Database banco = await Conexao.instancia.bancoDados;
-    final EstadoDao dao = EstadoDao(banco);
+    final Database banco = await DatabaseHelper.instance.database;
+    final List<Map<String, dynamic>> resultado = await banco.query(
+      'estado',
+      orderBy: 'nome',
+    );
 
-    final List<Estado> estadosEncontrados = await dao.buscarTodos();
-
-    if (!mounted) {
-      return;
-    }
+    if (!mounted) return;
 
     setState(() {
-      estados = estadosEncontrados;
+      estados = resultado;
     });
   }
 
   Future<void> excluirEstado(int id) async {
-    final Database banco = await Conexao.instancia.bancoDados;
-    final EstadoDao dao = EstadoDao(banco);
+    final Database banco = await DatabaseHelper.instance.database;
 
-    await CidadeDao(banco).excluirPorEstado(id);
-    await dao.excluir(id);
-
+    await banco.delete('cidade', where: 'estado_id = ?', whereArgs: [id]);
+    await banco.delete('estado', where: 'id = ?', whereArgs: [id]);
     await listarEstados();
   }
 
-  Future<void> abrirFormularioEstado({Estado? estado}) async {
+  Future<void> abrirFormulario({Map<String, dynamic>? estado}) async {
     final bool? salvou = await Navigator.of(
       context,
     ).push(MaterialPageRoute(builder: (_) => EstadoFormPage(estado: estado)));
@@ -61,12 +55,12 @@ class _EstadoListaPageState extends State<EstadoListaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Lista de estados')),
+      appBar: AppBar(title: const Text('Estados')),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           FilledButton.icon(
-            onPressed: () => abrirFormularioEstado(),
+            onPressed: () => abrirFormulario(),
             icon: const Icon(Icons.add),
             label: const Text('Cadastrar estado'),
           ),
@@ -76,25 +70,23 @@ class _EstadoListaPageState extends State<EstadoListaPage> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 8),
-          for (final Estado estado in estados)
+          for (final Map<String, dynamic> estado in estados)
             Card(
               child: ListTile(
-                title: Text('${estado.nome} (${estado.sigla})'),
-                subtitle: Text('id: ${estado.id}'),
+                title: Text('${estado['nome']} (${estado['sigla']})'),
+                subtitle: Text('id: ${estado['id']}'),
                 trailing: Wrap(
                   spacing: 4,
                   children: [
                     IconButton(
                       tooltip: 'Alterar',
                       icon: const Icon(Icons.edit),
-                      onPressed: () => abrirFormularioEstado(estado: estado),
+                      onPressed: () => abrirFormulario(estado: estado),
                     ),
                     IconButton(
                       tooltip: 'Excluir',
                       icon: const Icon(Icons.delete),
-                      onPressed: estado.id == null
-                          ? null
-                          : () => excluirEstado(estado.id!),
+                      onPressed: () => excluirEstado(estado['id'] as int),
                     ),
                   ],
                 ),

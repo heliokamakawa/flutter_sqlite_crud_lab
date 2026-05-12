@@ -4,6 +4,7 @@ import 'fases/fase_01/app/main_fase_01.dart';
 import 'fases/fase_02/app/main_fase_02.dart';
 import 'fases/fase_03/app/main_fase_03.dart';
 import 'fases/fase_04/app/main_fase_04.dart';
+import 'fases/fase_05/app/main_fase_05.dart';
 
 void main() {
   runApp(const MenuFasesApp());
@@ -48,9 +49,7 @@ class MenuFasesPage extends StatelessWidget {
               trailing: const Icon(Icons.chevron_right),
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const Fase01ExecucaoIsolada(),
-                  ),
+                  MaterialPageRoute(builder: (_) => const Fase01HomePage()),
                 );
               },
             ),
@@ -65,9 +64,7 @@ class MenuFasesPage extends StatelessWidget {
               trailing: const Icon(Icons.chevron_right),
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const Fase02ExecucaoIsolada(),
-                  ),
+                  MaterialPageRoute(builder: (_) => const Fase02HomePage()),
                 );
               },
             ),
@@ -79,9 +76,9 @@ class MenuFasesPage extends StatelessWidget {
               subtitle: const Text('CRUD com DAO - SQL fora da tela'),
               trailing: const Icon(Icons.chevron_right),
               onTap: () {
-                Navigator.of(
-                  context,
-                ).push(MaterialPageRoute(builder: (_) => const Fase03App()));
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const Fase03HomePage()),
+                );
               },
             ),
           ),
@@ -92,9 +89,22 @@ class MenuFasesPage extends StatelessWidget {
               subtitle: const Text('CRUD de estados e cidades com DAO'),
               trailing: const Icon(Icons.chevron_right),
               onTap: () {
-                Navigator.of(
-                  context,
-                ).push(MaterialPageRoute(builder: (_) => const Fase04App()));
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const Fase04HomePage()),
+                );
+              },
+            ),
+          ),
+          Card(
+            child: ListTile(
+              leading: const CircleAvatar(child: Text('05')),
+              title: const Text('Fase 05'),
+              subtitle: const Text('Cadastro de estados e cidades com helper'),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const Fase05HomePage()),
+                );
               },
             ),
           ),

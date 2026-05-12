@@ -22,25 +22,31 @@ flutter run
 Para executar apenas a Fase 01:
 
 ```bash
-flutter run -t lib/fases/fase_01/app/main_fase_01.dart
+flutter run -t lib/fases/fase_01/main.dart
 ```
 
 Para executar apenas a Fase 02:
 
 ```bash
-flutter run -t lib/fases/fase_02/app/main_fase_02.dart
+flutter run -t lib/fases/fase_02/main.dart
 ```
 
 Para executar apenas a Fase 03:
 
 ```bash
-flutter run -t lib/fases/fase_03/app/main_fase_03.dart
+flutter run -t lib/fases/fase_03/main.dart
 ```
 
 Para executar apenas a Fase 04:
 
 ```bash
-flutter run -t lib/fases/fase_04/app/main_fase_04.dart
+flutter run -t lib/fases/fase_04/main.dart
+```
+
+Para executar apenas a Fase 05:
+
+```bash
+flutter run -t lib/fases/fase_05/main.dart
 ```
 
 Para executar no navegador:
